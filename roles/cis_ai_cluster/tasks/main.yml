@@ -44,22 +44,16 @@
 
 # Network configuration
 - name: Disable IP forwarding
-  ansible.builtin.sysctl:
-    name: net.ipv4.ip_forward
-    value: "0"
-    sysctl_set: true
-    state: present
-    reload: true
+  ansible.builtin.command:
+    cmd: "sysctl -w net.ipv4.ip_forward=0"
+  changed_when: true
   when:
     - remediate | bool
 
 - name: Disable ICMP redirects
-  ansible.builtin.sysctl:
-    name: "{{ item }}"
-    value: "0"
-    sysctl_set: true
-    state: present
-    reload: true
+  ansible.builtin.command:
+    cmd: "sysctl -w {{ item }}=0"
+  changed_when: true
   loop:
     - net.ipv4.conf.all.accept_redirects
     - net.ipv4.conf.default.accept_redirects
@@ -69,12 +63,9 @@
     - remediate | bool
 
 - name: Disable source routing
-  ansible.builtin.sysctl:
-    name: "{{ item }}"
-    value: "0"
-    sysctl_set: true
-    state: present
-    reload: true
+  ansible.builtin.command:
+    cmd: "sysctl -w {{ item }}=0"
+  changed_when: true
   loop:
     - net.ipv4.conf.all.accept_source_route
     - net.ipv4.conf.default.accept_source_route
@@ -82,12 +73,9 @@
     - remediate | bool
 
 - name: Enable TCP SYN cookies
-  ansible.builtin.sysctl:
-    name: net.ipv4.tcp_syncookies
-    value: "1"
-    sysctl_set: true
-    state: present
-    reload: true
+  ansible.builtin.command:
+    cmd: "sysctl -w net.ipv4.tcp_syncookies=1"
+  changed_when: true
   when:
     - remediate | bool
 
@@ -127,22 +115,16 @@
     - remediate | bool
 
 - name: Set core dump sysctl
-  ansible.builtin.sysctl:
-    name: fs.suid_dumpable
-    value: "0"
-    sysctl_set: true
-    state: present
-    reload: true
+  ansible.builtin.command:
+    cmd: "sysctl -w fs.suid_dumpable=0"
+  changed_when: true
   when:
     - remediate | bool
 
 - name: Enable ASLR
-  ansible.builtin.sysctl:
-    name: kernel.randomize_va_space
-    value: "2"
-    sysctl_set: true
-    state: present
-    reload: true
+  ansible.builtin.command:
+    cmd: "sysctl -w kernel.randomize_va_space=2"
+  changed_when: true
   when:
     - remediate | bool
 
