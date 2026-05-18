@@ -10,7 +10,7 @@ on:
 
 env:
   NAMESPACE: stevefulme1
-  COLLECTION: nvidia_ai_factory
+  COLLECTION: gpu_ai_factory
 
 jobs:
   ansible-lint:
