@@ -124,12 +124,9 @@
     - not (audit_only | bool)
 
 - name: Set kernel security parameters
-  ansible.posix.sysctl:
-    name: "{{ item.key }}"
-    value: "{{ item.value }}"
-    sysctl_set: true
-    state: present
-    reload: true
+  ansible.builtin.shell:
+    cmd: "sysctl -w {{ item.key }}={{ item.value }}"
+  changed_when: true
   loop: "{{ stig_kernel_params | dict2items }}"
   when:
     - remediate | bool
