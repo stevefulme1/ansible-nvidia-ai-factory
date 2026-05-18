@@ -1,6 +1,6 @@
 ---
 - name: Validate BCM connectivity
-  stevefulme1.nvidia_ai_factory.bcm_node_info:
+  stevefulme1.gpu_ai_factory.bcm_node_info:
     bcm_url: "{{ bcm_url }}"
     bcm_token: "{{ bcm_token }}"
     node_id: "{{ dgx_node_id }}"
@@ -8,7 +8,7 @@
   register: node_info
 
 - name: Check current firmware versions
-  stevefulme1.nvidia_ai_factory.dgx_firmware_info:
+  stevefulme1.gpu_ai_factory.dgx_firmware_info:
     bcm_url: "{{ bcm_url }}"
     bcm_token: "{{ bcm_token }}"
     node_id: "{{ dgx_node_id }}"
@@ -17,7 +17,7 @@
   when: dgx_provision_firmware_check
 
 - name: Apply firmware updates if needed
-  stevefulme1.nvidia_ai_factory.dgx_firmware:
+  stevefulme1.gpu_ai_factory.dgx_firmware:
     bcm_url: "{{ bcm_url }}"
     bcm_token: "{{ bcm_token }}"
     node_id: "{{ dgx_node_id }}"
@@ -28,7 +28,7 @@
     - dgx_provision_firmware_url is defined
 
 - name: Configure BIOS settings
-  stevefulme1.nvidia_ai_factory.dgx_bios:
+  stevefulme1.gpu_ai_factory.dgx_bios:
     bcm_url: "{{ bcm_url }}"
     bcm_token: "{{ bcm_token }}"
     node_id: "{{ dgx_node_id }}"
@@ -37,7 +37,7 @@
     validate_certs: "{{ dgx_provision_validate_certs }}"
 
 - name: Register node in BCM cluster
-  stevefulme1.nvidia_ai_factory.bcm_node:
+  stevefulme1.gpu_ai_factory.bcm_node:
     bcm_url: "{{ bcm_url }}"
     bcm_token: "{{ bcm_token }}"
     hostname: "{{ dgx_hostname }}"
@@ -52,7 +52,7 @@
     wait_timeout: "{{ dgx_provision_wait_timeout }}"
 
 - name: Verify node health
-  stevefulme1.nvidia_ai_factory.dgx_health:
+  stevefulme1.gpu_ai_factory.dgx_health:
     bcm_url: "{{ bcm_url }}"
     bcm_token: "{{ bcm_token }}"
     node_id: "{{ dgx_node_id }}"

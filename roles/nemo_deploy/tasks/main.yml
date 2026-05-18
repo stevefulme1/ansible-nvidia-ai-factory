@@ -1,6 +1,6 @@
 ---
 - name: Pull NGC container image for model serving
-  stevefulme1.nvidia_ai_factory.ngc_image:
+  stevefulme1.gpu_ai_factory.ngc_image:
     bcm_url: "{{ bcm_url }}"
     bcm_token: "{{ bcm_token }}"
     image_name: "{{ nemo_deploy_image }}"
@@ -10,7 +10,7 @@
     state: present
 
 - name: Create Triton Inference Server instance
-  stevefulme1.nvidia_ai_factory.triton_server:
+  stevefulme1.gpu_ai_factory.triton_server:
     bcm_url: "{{ bcm_url }}"
     bcm_token: "{{ bcm_token }}"
     name: "{{ nemo_deploy_model_name }}-triton"
@@ -26,7 +26,7 @@
   register: triton_result
 
 - name: Deploy NeMo model
-  stevefulme1.nvidia_ai_factory.nemo_model:
+  stevefulme1.gpu_ai_factory.nemo_model:
     bcm_url: "{{ bcm_url }}"
     bcm_token: "{{ bcm_token }}"
     name: "{{ nemo_deploy_model_name }}"
@@ -43,7 +43,7 @@
   register: model_result
 
 - name: Verify model is serving
-  stevefulme1.nvidia_ai_factory.nemo_model_info:
+  stevefulme1.gpu_ai_factory.nemo_model_info:
     bcm_url: "{{ bcm_url }}"
     bcm_token: "{{ bcm_token }}"
     model_id: "{{ model_result.model.id | default('') }}"

@@ -1,6 +1,6 @@
 ---
 - name: Configure InfiniBand ports on training nodes
-  stevefulme1.nvidia_ai_factory.infiniband_port:
+  stevefulme1.gpu_ai_factory.infiniband_port:
     bcm_url: "{{ bcm_url }}"
     bcm_token: "{{ bcm_token }}"
     port_name: "{{ item.port_name }}"
@@ -13,7 +13,7 @@
   loop: "{{ infiniband_ports }}"
 
 - name: Create InfiniBand partition for training
-  stevefulme1.nvidia_ai_factory.infiniband_partition:
+  stevefulme1.gpu_ai_factory.infiniband_partition:
     bcm_url: "{{ bcm_url }}"
     bcm_token: "{{ bcm_token }}"
     name: "{{ infiniband_partition_name }}"
@@ -24,7 +24,7 @@
     state: present
 
 - name: Configure RDMA settings on training nodes
-  stevefulme1.nvidia_ai_factory.rdma_config:
+  stevefulme1.gpu_ai_factory.rdma_config:
     bcm_url: "{{ bcm_url }}"
     bcm_token: "{{ bcm_token }}"
     name: "{{ item }}-rdma"
@@ -37,7 +37,7 @@
   loop: "{{ training_node_ids }}"
 
 - name: Verify InfiniBand fabric health
-  stevefulme1.nvidia_ai_factory.infiniband_info:
+  stevefulme1.gpu_ai_factory.infiniband_info:
     bcm_url: "{{ bcm_url }}"
     bcm_token: "{{ bcm_token }}"
     validate_certs: "{{ infiniband_rdma_validate_certs }}"

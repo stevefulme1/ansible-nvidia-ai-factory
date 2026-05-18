@@ -1,6 +1,6 @@
 ---
 - name: Create BCM tenant
-  stevefulme1.nvidia_ai_factory.bcm_tenant:
+  stevefulme1.gpu_ai_factory.bcm_tenant:
     bcm_url: "{{ bcm_url }}"
     bcm_token: "{{ bcm_token }}"
     name: "{{ tenant_name }}"
@@ -14,7 +14,7 @@
   register: tenant_result
 
 - name: Create InfiniBand partition for tenant isolation
-  stevefulme1.nvidia_ai_factory.infiniband_partition:
+  stevefulme1.gpu_ai_factory.infiniband_partition:
     bcm_url: "{{ bcm_url }}"
     bcm_token: "{{ bcm_token }}"
     name: "{{ tenant_name }}-partition"
@@ -25,7 +25,7 @@
     state: present
 
 - name: Allocate GPU resources for tenant
-  stevefulme1.nvidia_ai_factory.bcm_gpu_allocation:
+  stevefulme1.gpu_ai_factory.bcm_gpu_allocation:
     bcm_url: "{{ bcm_url }}"
     bcm_token: "{{ bcm_token }}"
     tenant_id: "{{ tenant_result.tenant.id | default(tenant_id) }}"
@@ -36,7 +36,7 @@
     wait: true
 
 - name: Verify tenant isolation
-  stevefulme1.nvidia_ai_factory.bcm_tenant_info:
+  stevefulme1.gpu_ai_factory.bcm_tenant_info:
     bcm_url: "{{ bcm_url }}"
     bcm_token: "{{ bcm_token }}"
     tenant_id: "{{ tenant_result.tenant.id | default(tenant_id) }}"

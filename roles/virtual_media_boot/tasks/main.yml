@@ -1,6 +1,6 @@
 ---
 - name: Get current DGX power state
-  stevefulme1.nvidia_ai_factory.dgx_health:
+  stevefulme1.gpu_ai_factory.dgx_health:
     bcm_url: "{{ bcm_url }}"
     bcm_token: "{{ bcm_token }}"
     node_id: "{{ dgx_node_id }}"
@@ -8,7 +8,7 @@
   register: current_state
 
 - name: Configure BIOS for virtual media boot
-  stevefulme1.nvidia_ai_factory.dgx_bios:
+  stevefulme1.gpu_ai_factory.dgx_bios:
     bcm_url: "{{ bcm_url }}"
     bcm_token: "{{ bcm_token }}"
     node_id: "{{ dgx_node_id }}"
@@ -20,7 +20,7 @@
     validate_certs: "{{ virtual_media_boot_validate_certs }}"
 
 - name: Power off DGX for ISO mount
-  stevefulme1.nvidia_ai_factory.dgx_power:
+  stevefulme1.gpu_ai_factory.dgx_power:
     bcm_url: "{{ bcm_url }}"
     bcm_token: "{{ bcm_token }}"
     node_id: "{{ dgx_node_id }}"
@@ -34,7 +34,7 @@
   when: current_state.health.power_state | default('On') == 'On'
 
 - name: Power on DGX to boot from virtual media
-  stevefulme1.nvidia_ai_factory.dgx_power:
+  stevefulme1.gpu_ai_factory.dgx_power:
     bcm_url: "{{ bcm_url }}"
     bcm_token: "{{ bcm_token }}"
     node_id: "{{ dgx_node_id }}"
@@ -42,7 +42,7 @@
     validate_certs: "{{ virtual_media_boot_validate_certs }}"
 
 - name: Wait for provisioning to complete
-  stevefulme1.nvidia_ai_factory.dgx_health:
+  stevefulme1.gpu_ai_factory.dgx_health:
     bcm_url: "{{ bcm_url }}"
     bcm_token: "{{ bcm_token }}"
     node_id: "{{ dgx_node_id }}"

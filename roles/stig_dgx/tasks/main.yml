@@ -124,7 +124,7 @@
     - not (audit_only | bool)
 
 - name: Set kernel security parameters
-  ansible.builtin.sysctl:
+  ansible.posix.sysctl:
     name: "{{ item.key }}"
     value: "{{ item.value }}"
     sysctl_set: true
