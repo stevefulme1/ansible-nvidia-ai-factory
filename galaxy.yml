@@ -1,0 +1,36 @@
+---
+namespace: stevefulme1
+name: nvidia_ai_factory
+version: 1.0.0
+readme: README.md
+authors:
+  - Steve Fulmer <sfulmer@redhat.com>
+description: >-
+  Ansible Collection for NVIDIA AI Factory / Sovereign AI Factory.
+  Provides modules for Base Command Manager (BCM) cluster management,
+  DGX/HGX node provisioning, GPU allocation, tenant isolation,
+  InfiniBand/RDMA networking, NeMo model deployment, Triton Inference
+  Server, NGC catalog management, and a dynamic inventory plugin.
+  Includes EDA event source plugins for DGX telemetry, InfiniBand
+  fabric monitoring, and NGC catalog watches.
+license:
+  - GPL-3.0-or-later
+tags:
+  - nvidia
+  - dgx
+  - gpu
+  - ai
+  - bcm
+  - infiniband
+  - nemo
+  - triton
+  - sovereign_ai
+dependencies: {}
+repository: https://github.com/stevefulme1/ansible-nvidia-ai-factory
+documentation: https://github.com/stevefulme1/ansible-nvidia-ai-factory/blob/main/README.md
+homepage: https://github.com/stevefulme1/ansible-nvidia-ai-factory
+issues: https://github.com/stevefulme1/ansible-nvidia-ai-factory/issues
+build_ignore:
+  - .git
+  - .github
+  - tests/output
