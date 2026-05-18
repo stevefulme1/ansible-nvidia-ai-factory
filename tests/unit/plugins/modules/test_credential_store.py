@@ -58,8 +58,13 @@ class TestMissingRequests:
     """Test behavior when requests library is missing."""
 
     def test_missing_requests_fails(self, mock_module):
-        set_module_args({"host": "https://vault.example.com", "api_key": "test-token", "credential_name": "test-cred", "state": "present",
-            "secret_value": "test-secret"})
+        set_module_args({
+            "host": "https://vault.example.com",
+            "api_key": "test-token",
+            "credential_name": "test-cred",
+            "state": "present",
+            "secret_value": "test-secret",
+        })
 
         with patch(
             "ansible_collections.stevefulme1.gpu_ai_factory.plugins.modules.credential_store.HAS_REQUESTS",
@@ -79,8 +84,13 @@ class TestGet:
 
     @patch("ansible_collections.stevefulme1.gpu_ai_factory.plugins.modules.credential_store.requests")
     def test_get_success(self, mock_requests, mock_module):
-        set_module_args({"host": "https://vault.example.com", "api_key": "test-token", "credential_name": "test-cred", "state": "present",
-            "secret_value": "test-secret"})
+        set_module_args({
+            "host": "https://vault.example.com",
+            "api_key": "test-token",
+            "credential_name": "test-cred",
+            "state": "present",
+            "secret_value": "test-secret",
+        })
 
         mock_response = MagicMock()
         mock_response.status_code = 200
@@ -100,8 +110,13 @@ class TestGet:
 
     @patch("ansible_collections.stevefulme1.gpu_ai_factory.plugins.modules.credential_store.requests")
     def test_api_error(self, mock_requests, mock_module):
-        set_module_args({"host": "https://vault.example.com", "api_key": "test-token", "credential_name": "test-cred", "state": "present",
-            "secret_value": "test-secret"})
+        set_module_args({
+            "host": "https://vault.example.com",
+            "api_key": "test-token",
+            "credential_name": "test-cred",
+            "state": "present",
+            "secret_value": "test-secret",
+        })
 
         import requests as real_requests
         mock_requests.get.side_effect = real_requests.exceptions.ConnectionError("connection failed")
@@ -122,7 +137,13 @@ class TestCheckMode:
 
     @patch("ansible_collections.stevefulme1.gpu_ai_factory.plugins.modules.credential_store.requests")
     def test_check_mode(self, mock_requests, mock_module):
-        args = {"host": "https://vault.example.com", "api_key": "test-token", "credential_name": "test-cred", "state": "present", "secret_value": "test-secret"}
+        set_module_args({
+            "host": "https://vault.example.com",
+            "api_key": "test-token",
+            "credential_name": "test-cred",
+            "state": "present",
+            "secret_value": "test-secret",
+        })
         args["_ansible_check_mode"] = True
         set_module_args(args)
 
