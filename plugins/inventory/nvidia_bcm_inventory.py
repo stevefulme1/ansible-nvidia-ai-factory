@@ -68,25 +68,12 @@ extends_documentation_fragment:
 """
 
 EXAMPLES = r"""
-# nvidia_bcm.yml
+# Basic usage — nvidia_bcm.yml
 plugin: stevefulme1.nvidia_ai_factory.nvidia_bcm_inventory
 bcm_url: https://bcm.example.com
 bcm_token: "{{ lookup('env', 'NVIDIA_BCM_TOKEN') }}"
-
-# Filter to specific cluster
-plugin: stevefulme1.nvidia_ai_factory.nvidia_bcm_inventory
-bcm_url: https://bcm.example.com
-bcm_token: "{{ lookup('env', 'NVIDIA_BCM_TOKEN') }}"
-cluster_id: "cluster-001"
-
-# With keyed groups
-plugin: stevefulme1.nvidia_ai_factory.nvidia_bcm_inventory
-bcm_url: https://bcm.example.com
-bcm_token: "{{ lookup('env', 'NVIDIA_BCM_TOKEN') }}"
-keyed_groups:
-  - key: gpu_type
-    prefix: gpu
-  - key: tenant
+# Optional: filter to specific cluster with cluster_id: "cluster-001"
+# Optional: add keyed_groups for GPU type grouping
     prefix: tenant
 """
 
