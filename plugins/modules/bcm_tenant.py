@@ -45,6 +45,7 @@ options:
         description:
             - List of user identifiers.
         type: list
+        elements: str
     tenant_id:
         description:
             - The ID of an existing resource.

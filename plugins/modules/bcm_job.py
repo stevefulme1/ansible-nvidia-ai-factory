@@ -58,6 +58,7 @@ options:
         description:
             - Volume mounts.
         type: list
+        elements: str
     job_id:
         description:
             - The ID of an existing resource.

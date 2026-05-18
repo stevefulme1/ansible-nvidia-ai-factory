@@ -11,7 +11,6 @@ __metaclass__ = type
 DOCUMENTATION = r"""
 ---
 name: nvidia_bcm_inventory
-plugin_type: inventory
 short_description: Dynamic inventory from NVIDIA Base Command Manager
 description:
     - Generates a dynamic inventory from the NVIDIA BCM REST API.
