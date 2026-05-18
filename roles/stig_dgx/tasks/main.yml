@@ -114,11 +114,11 @@
     owner: root
     group: root
   loop:
-    - { path: /etc/passwd, mode: '0644' }
-    - { path: /etc/shadow, mode: '0000' }
-    - { path: /etc/group, mode: '0644' }
-    - { path: /etc/gshadow, mode: '0000' }
-    - { path: /etc/ssh/sshd_config, mode: '0600' }
+    - {path: /etc/passwd, mode: '0644'}
+    - {path: /etc/shadow, mode: '0000'}
+    - {path: /etc/group, mode: '0644'}
+    - {path: /etc/gshadow, mode: '0000'}
+    - {path: /etc/ssh/sshd_config, mode: '0600'}
   when:
     - remediate | bool
     - not (audit_only | bool)
