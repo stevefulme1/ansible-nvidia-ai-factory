@@ -16,6 +16,10 @@ description: >-
 license:
   - GPL-3.0-or-later
 tags:
+  - infrastructure
+  - cloud
+  - networking
+  - monitoring
   - nvidia
   - dgx
   - gpu
