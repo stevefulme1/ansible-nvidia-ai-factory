@@ -162,6 +162,7 @@ def find_resource(client, base_url, params):
         pass
     return None
 
+
 def create_resource(module, client, base_url):
     """Create a new resource."""
     params = module.params
