@@ -144,8 +144,15 @@ class TestCheckMode:
             "state": "present",
             "secret_value": "test-secret",
         })
-        args["_ansible_check_mode"] = True
-        set_module_args(args)
+        check_args = {
+            "host": "https://vault.example.com",
+            "api_key": "test-token",
+            "credential_name": "test-cred",
+            "state": "present",
+            "secret_value": "test-secret",
+            "_ansible_check_mode": True,
+        }
+        set_module_args(check_args)
 
         mock_response = MagicMock()
         mock_response.status_code = 200
