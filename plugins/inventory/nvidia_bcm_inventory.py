@@ -74,7 +74,6 @@ bcm_url: https://bcm.example.com
 bcm_token: "{{ lookup('env', 'NVIDIA_BCM_TOKEN') }}"
 # Optional: filter to specific cluster with cluster_id: "cluster-001"
 # Optional: add keyed_groups for GPU type grouping
-    prefix: tenant
 """
 
 from ansible.errors import AnsibleError
