@@ -9,7 +9,7 @@ __metaclass__ = type
 
 import pytest
 from unittest.mock import MagicMock, patch
-from ansible_collections.stevefulme1.nvidia_ai_factory.plugins.module_utils.nvidia_wait import (
+from ansible_collections.stevefulme1.gpu_ai_factory.plugins.module_utils.nvidia_wait import (
     call_with_retry,
 )
 

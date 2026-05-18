@@ -64,27 +64,27 @@ options:
     type: bool
     default: true
 extends_documentation_fragment:
-  - stevefulme1.nvidia_ai_factory.nvidia
+  - stevefulme1.gpu_ai_factory.nvidia
 """
 
 EXAMPLES = r"""
 - name: Get all available DGX images
   ansible.builtin.debug:
-    msg: "{{ lookup('stevefulme1.nvidia_ai_factory.dgx_images') }}"
+    msg: "{{ lookup('stevefulme1.gpu_ai_factory.dgx_images') }}"
 
 - name: Get x86_64 images only
   ansible.builtin.debug:
-    msg: "{{ lookup('stevefulme1.nvidia_ai_factory.dgx_images', 'x86_64') }}"
+    msg: "{{ lookup('stevefulme1.gpu_ai_factory.dgx_images', 'x86_64') }}"
 
 - name: Get RHEL 9 images for x86_64
   ansible.builtin.debug:
     msg: >-
-      {{ lookup('stevefulme1.nvidia_ai_factory.dgx_images', 'x86_64',
+      {{ lookup('stevefulme1.gpu_ai_factory.dgx_images', 'x86_64',
                 distro='rhel9') }}
 
 - name: Use in a loop to provision nodes with latest image
   vars:
-    images: "{{ lookup('stevefulme1.nvidia_ai_factory.dgx_images', 'x86_64',
+    images: "{{ lookup('stevefulme1.gpu_ai_factory.dgx_images', 'x86_64',
                         distro='ubuntu22.04') }}"
   ansible.builtin.debug:
     msg: "Latest image: {{ images | sort(attribute='version') | last }}"

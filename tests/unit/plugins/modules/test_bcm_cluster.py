@@ -58,7 +58,7 @@ class TestBcmCluster:
     """Tests for bcm_cluster module."""
 
     @patch(
-        "ansible_collections.stevefulme1.nvidia_ai_factory."
+        "ansible_collections.stevefulme1.gpu_ai_factory."
         "plugins.modules.bcm_cluster.create_bcm_client"
     )
     def test_missing_requests_fails(self, mock_client, mock_module):
@@ -70,11 +70,11 @@ class TestBcmCluster:
         })
 
         with patch(
-            "ansible_collections.stevefulme1.nvidia_ai_factory."
+            "ansible_collections.stevefulme1.gpu_ai_factory."
             "plugins.modules.bcm_cluster.HAS_REQUESTS",
             False,
         ):
-            from ansible_collections.stevefulme1.nvidia_ai_factory.plugins.modules import bcm_cluster
+            from ansible_collections.stevefulme1.gpu_ai_factory.plugins.modules import bcm_cluster
             with pytest.raises(AnsibleFailJson) as exc_info:
                 bcm_cluster.main()
             assert "requests" in exc_info.value.kwargs["msg"]

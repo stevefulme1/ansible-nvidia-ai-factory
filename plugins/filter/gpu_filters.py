@@ -17,31 +17,31 @@ description:
   - Includes filters for summing GPU memory, counting GPUs, filtering
     nodes by GPU type, and averaging GPU utilization from telemetry data.
 extends_documentation_fragment:
-  - stevefulme1.nvidia_ai_factory.nvidia
+  - stevefulme1.gpu_ai_factory.nvidia
 """
 
 EXAMPLES = r"""
 # Sum total GPU memory across all nodes
 - name: Calculate total GPU memory
   ansible.builtin.debug:
-    msg: "Total GPU memory: {{ nodes | stevefulme1.nvidia_ai_factory.gpu_memory_total }} GB"
+    msg: "Total GPU memory: {{ nodes | stevefulme1.gpu_ai_factory.gpu_memory_total }} GB"
 
 # Count GPUs across nodes
 - name: Count all GPUs
   ansible.builtin.debug:
-    msg: "Total GPUs: {{ nodes | stevefulme1.nvidia_ai_factory.gpu_count }}"
+    msg: "Total GPUs: {{ nodes | stevefulme1.gpu_ai_factory.gpu_count }}"
 
 # Filter nodes to only those with H100 GPUs
 - name: Get H100 nodes
   ansible.builtin.debug:
-    msg: "H100 nodes: {{ nodes | stevefulme1.nvidia_ai_factory.filter_by_gpu_type('H100') }}"
+    msg: "H100 nodes: {{ nodes | stevefulme1.gpu_ai_factory.filter_by_gpu_type('H100') }}"
 
 # Calculate average GPU utilization
 - name: Average GPU utilization
   ansible.builtin.debug:
     msg: >-
       Average utilization:
-      {{ telemetry | stevefulme1.nvidia_ai_factory.gpu_utilization_avg }}%
+      {{ telemetry | stevefulme1.gpu_ai_factory.gpu_utilization_avg }}%
 """
 
 from ansible.errors import AnsibleFilterError

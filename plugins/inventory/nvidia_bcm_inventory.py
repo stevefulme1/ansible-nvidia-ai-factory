@@ -23,7 +23,7 @@ options:
     plugin:
         description: Name of the plugin.
         required: true
-        choices: ["stevefulme1.nvidia_ai_factory.nvidia_bcm_inventory"]
+        choices: ["stevefulme1.gpu_ai_factory.nvidia_bcm_inventory"]
     bcm_url:
         description: URL of the BCM API endpoint.
         required: true
@@ -68,7 +68,7 @@ extends_documentation_fragment:
 
 EXAMPLES = r"""
 # Basic usage — nvidia_bcm.yml
-plugin: stevefulme1.nvidia_ai_factory.nvidia_bcm_inventory
+plugin: stevefulme1.gpu_ai_factory.nvidia_bcm_inventory
 bcm_url: https://bcm.example.com
 bcm_token: "{{ lookup('env', 'NVIDIA_BCM_TOKEN') }}"
 # Optional: filter to specific cluster with cluster_id: "cluster-001"
@@ -88,7 +88,7 @@ except ImportError:
 class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
     """Dynamic inventory plugin for NVIDIA BCM."""
 
-    NAME = "stevefulme1.nvidia_ai_factory.nvidia_bcm_inventory"
+    NAME = "stevefulme1.gpu_ai_factory.nvidia_bcm_inventory"
 
     def verify_file(self, path):
         """Verify the inventory source file."""

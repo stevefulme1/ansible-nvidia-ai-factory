@@ -66,23 +66,23 @@ options:
     type: str
     required: false
 extends_documentation_fragment:
-  - stevefulme1.nvidia_ai_factory.nvidia
+  - stevefulme1.gpu_ai_factory.nvidia
 """
 
 EXAMPLES = r"""
 - name: Get all BCM-registered nodes
   ansible.builtin.debug:
-    msg: "{{ lookup('stevefulme1.nvidia_ai_factory.bcm_nodes') }}"
+    msg: "{{ lookup('stevefulme1.gpu_ai_factory.bcm_nodes') }}"
 
 - name: Get nodes in a specific cluster
   ansible.builtin.debug:
     msg: >-
-      {{ lookup('stevefulme1.nvidia_ai_factory.bcm_nodes', 'gpu-cluster-01') }}
+      {{ lookup('stevefulme1.gpu_ai_factory.bcm_nodes', 'gpu-cluster-01') }}
 
 - name: Get only active nodes in a tenant
   ansible.builtin.debug:
     msg: >-
-      {{ lookup('stevefulme1.nvidia_ai_factory.bcm_nodes', 'tenant-ml',
+      {{ lookup('stevefulme1.gpu_ai_factory.bcm_nodes', 'tenant-ml',
                 status='UP') }}
 
 - name: Use nodes in a play for dynamic targeting
@@ -91,7 +91,7 @@ EXAMPLES = r"""
     - name: Gather GPU nodes
       ansible.builtin.set_fact:
         gpu_hosts: >-
-          {{ lookup('stevefulme1.nvidia_ai_factory.bcm_nodes',
+          {{ lookup('stevefulme1.gpu_ai_factory.bcm_nodes',
                     'gpu-cluster-01') | map(attribute='hostname') | list }}
 """
 

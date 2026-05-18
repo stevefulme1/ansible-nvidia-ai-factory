@@ -7,7 +7,7 @@
 from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
-from ansible_collections.stevefulme1.nvidia_ai_factory.plugins.module_utils.nvidia_common import (
+from ansible_collections.stevefulme1.gpu_ai_factory.plugins.module_utils.nvidia_common import (
     NVIDIA_COMMON_ARGS,
     LIFECYCLE_ACTIVE,
     LIFECYCLE_DELETED,

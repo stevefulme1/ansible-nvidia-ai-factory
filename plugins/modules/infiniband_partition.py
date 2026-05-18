@@ -60,7 +60,7 @@ options:
             - absent
         default: present
 extends_documentation_fragment:
-    - stevefulme1.nvidia_ai_factory.nvidia
+    - stevefulme1.gpu_ai_factory.nvidia
 requirements:
     - "python >= 3.12"
     - "requests"
@@ -68,13 +68,13 @@ requirements:
 
 EXAMPLES = r"""
 - name: Create a infiniband partition
-  stevefulme1.nvidia_ai_factory.infiniband_partition:
+  stevefulme1.gpu_ai_factory.infiniband_partition:
     bcm_url: "https://bcm.example.com"
     bcm_token: "{{ bcm_token }}"
     state: present
 
 - name: Delete a infiniband partition
-  stevefulme1.nvidia_ai_factory.infiniband_partition:
+  stevefulme1.gpu_ai_factory.infiniband_partition:
     bcm_url: "https://bcm.example.com"
     bcm_token: "{{ bcm_token }}"
     partition_id: "example-id"
@@ -96,14 +96,14 @@ try:
 except ImportError:
     HAS_REQUESTS = False
 
-from ansible_collections.stevefulme1.nvidia_ai_factory.plugins.module_utils.nvidia_common import (
+from ansible_collections.stevefulme1.gpu_ai_factory.plugins.module_utils.nvidia_common import (
     NVIDIA_COMMON_ARGS,
     DEAD_STATES,
     READY_STATES,
     to_dict,
 )
-from ansible_collections.stevefulme1.nvidia_ai_factory.plugins.module_utils.nvidia_auth import create_bcm_client
-from ansible_collections.stevefulme1.nvidia_ai_factory.plugins.module_utils.nvidia_wait import (
+from ansible_collections.stevefulme1.gpu_ai_factory.plugins.module_utils.nvidia_auth import create_bcm_client
+from ansible_collections.stevefulme1.gpu_ai_factory.plugins.module_utils.nvidia_wait import (
     call_with_retry,
     wait_for_resource,
 )

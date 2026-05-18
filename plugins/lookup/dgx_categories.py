@@ -61,24 +61,24 @@ options:
     type: bool
     default: true
 extends_documentation_fragment:
-  - stevefulme1.nvidia_ai_factory.nvidia
+  - stevefulme1.gpu_ai_factory.nvidia
 """
 
 EXAMPLES = r"""
 - name: Get all DGX software categories
   ansible.builtin.debug:
-    msg: "{{ lookup('stevefulme1.nvidia_ai_factory.dgx_categories') }}"
+    msg: "{{ lookup('stevefulme1.gpu_ai_factory.dgx_categories') }}"
 
 - name: Get only kernel module categories
   ansible.builtin.debug:
     msg: >-
-      {{ lookup('stevefulme1.nvidia_ai_factory.dgx_categories',
+      {{ lookup('stevefulme1.gpu_ai_factory.dgx_categories',
                 'kernel_modules') }}
 
 - name: List available disk setup configurations
   vars:
     disk_cats: >-
-      {{ lookup('stevefulme1.nvidia_ai_factory.dgx_categories', 'disk_setup') }}
+      {{ lookup('stevefulme1.gpu_ai_factory.dgx_categories', 'disk_setup') }}
   ansible.builtin.debug:
     msg: "Disk setup options: {{ disk_cats | map(attribute='name') | list }}"
 """

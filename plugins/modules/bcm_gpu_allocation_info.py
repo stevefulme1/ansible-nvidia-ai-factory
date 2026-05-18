@@ -36,7 +36,7 @@ options:
             - Filter by node.
         type: str
 extends_documentation_fragment:
-    - stevefulme1.nvidia_ai_factory.nvidia
+    - stevefulme1.gpu_ai_factory.nvidia
 requirements:
     - "python >= 3.12"
     - "requests"
@@ -44,12 +44,12 @@ requirements:
 
 EXAMPLES = r"""
 - name: List all resources
-  stevefulme1.nvidia_ai_factory.bcm_gpu_allocation_info:
+  stevefulme1.gpu_ai_factory.bcm_gpu_allocation_info:
     bcm_url: "https://bcm.example.com"
     bcm_token: "{{ bcm_token }}"
 
 - name: Get a specific resource
-  stevefulme1.nvidia_ai_factory.bcm_gpu_allocation_info:
+  stevefulme1.gpu_ai_factory.bcm_gpu_allocation_info:
     bcm_url: "https://bcm.example.com"
     bcm_token: "{{ bcm_token }}"
     allocation_id: "example-id"
@@ -71,12 +71,12 @@ try:
 except ImportError:
     HAS_REQUESTS = False
 
-from ansible_collections.stevefulme1.nvidia_ai_factory.plugins.module_utils.nvidia_common import (
+from ansible_collections.stevefulme1.gpu_ai_factory.plugins.module_utils.nvidia_common import (
     NVIDIA_COMMON_ARGS,
     to_dict,
 )
-from ansible_collections.stevefulme1.nvidia_ai_factory.plugins.module_utils.nvidia_auth import create_bcm_client
-from ansible_collections.stevefulme1.nvidia_ai_factory.plugins.module_utils.nvidia_wait import call_with_retry
+from ansible_collections.stevefulme1.gpu_ai_factory.plugins.module_utils.nvidia_auth import create_bcm_client
+from ansible_collections.stevefulme1.gpu_ai_factory.plugins.module_utils.nvidia_wait import call_with_retry
 
 
 def get_module_args():

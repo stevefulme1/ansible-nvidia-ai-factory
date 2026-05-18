@@ -2,7 +2,7 @@
 - name: GPU Utilization Monitoring
   hosts: all
   sources:
-    - stevefulme1.nvidia_ai_factory.dgx_telemetry:
+    - stevefulme1.gpu_ai_factory.dgx_telemetry:
         hosts: "{{ dgx_bmc_hosts }}"
         username: "{{ redfish_username }}"
         password: "{{ redfish_password }}"
@@ -17,7 +17,7 @@
         event.dgx_telemetry.gpu_errors.gpu_utilization | default(100) < 20
       action:
         run_playbook:
-          name: stevefulme1.nvidia_ai_factory.gpu_rightsizing_alert
+          name: stevefulme1.gpu_ai_factory.gpu_rightsizing_alert
           extra_vars:
             affected_host: "{{ event.dgx_telemetry.host }}"
             utilization: "{{ event.dgx_telemetry.gpu_errors.gpu_utilization }}"
@@ -28,7 +28,7 @@
         event.dgx_telemetry.gpu_errors.gpu_utilization | default(100) < 5
       action:
         run_playbook:
-          name: stevefulme1.nvidia_ai_factory.gpu_idle_alert
+          name: stevefulme1.gpu_ai_factory.gpu_idle_alert
           extra_vars:
             affected_host: "{{ event.dgx_telemetry.host }}"
             utilization: "{{ event.dgx_telemetry.gpu_errors.gpu_utilization }}"

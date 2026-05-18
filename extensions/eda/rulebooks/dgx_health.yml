@@ -2,7 +2,7 @@
 - name: DGX Health Monitoring
   hosts: all
   sources:
-    - stevefulme1.nvidia_ai_factory.dgx_telemetry:
+    - stevefulme1.gpu_ai_factory.dgx_telemetry:
         hosts: "{{ dgx_bmc_hosts }}"
         username: "{{ redfish_username }}"
         password: "{{ redfish_password }}"
@@ -20,7 +20,7 @@
         event.dgx_telemetry.temperatures | selectattr('reading_celsius', '>', 85) | list | length > 0
       action:
         run_playbook:
-          name: stevefulme1.nvidia_ai_factory.dgx_thermal_response
+          name: stevefulme1.gpu_ai_factory.dgx_thermal_response
           extra_vars:
             affected_host: "{{ event.dgx_telemetry.host }}"
             temperatures: "{{ event.dgx_telemetry.temperatures }}"
@@ -31,7 +31,7 @@
         event.dgx_telemetry.ecc_errors.uncorrectable | default(0) > 0
       action:
         run_playbook:
-          name: stevefulme1.nvidia_ai_factory.dgx_ecc_response
+          name: stevefulme1.gpu_ai_factory.dgx_ecc_response
           extra_vars:
             affected_host: "{{ event.dgx_telemetry.host }}"
             ecc_errors: "{{ event.dgx_telemetry.ecc_errors }}"
@@ -42,7 +42,7 @@
         event.dgx_telemetry.gpu_errors | length > 0
       action:
         run_playbook:
-          name: stevefulme1.nvidia_ai_factory.dgx_gpu_error_response
+          name: stevefulme1.gpu_ai_factory.dgx_gpu_error_response
           extra_vars:
             affected_host: "{{ event.dgx_telemetry.host }}"
             gpu_errors: "{{ event.dgx_telemetry.gpu_errors }}"
@@ -54,7 +54,7 @@
         event.dgx_telemetry.power.power_limit_watts | default(99999) * 0.95
       action:
         run_playbook:
-          name: stevefulme1.nvidia_ai_factory.dgx_power_response
+          name: stevefulme1.gpu_ai_factory.dgx_power_response
           extra_vars:
             affected_host: "{{ event.dgx_telemetry.host }}"
             power: "{{ event.dgx_telemetry.power }}"

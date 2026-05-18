@@ -2,7 +2,7 @@
 - name: InfiniBand Fabric Monitoring
   hosts: all
   sources:
-    - stevefulme1.nvidia_ai_factory.infiniband_fabric:
+    - stevefulme1.gpu_ai_factory.infiniband_fabric:
         bcm_url: "{{ bcm_url }}"
         bcm_token: "{{ bcm_token }}"
         interval: 30
@@ -16,7 +16,7 @@
         event.infiniband_fabric.event_type == "link_flap"
       action:
         run_playbook:
-          name: stevefulme1.nvidia_ai_factory.ib_link_flap_response
+          name: stevefulme1.gpu_ai_factory.ib_link_flap_response
           extra_vars:
             port_id: "{{ event.infiniband_fabric.port_id }}"
             flap_count: "{{ event.infiniband_fabric.count }}"
@@ -26,7 +26,7 @@
         event.infiniband_fabric.event_type == "error_threshold"
       action:
         run_playbook:
-          name: stevefulme1.nvidia_ai_factory.ib_error_response
+          name: stevefulme1.gpu_ai_factory.ib_error_response
           extra_vars:
             port_id: "{{ event.infiniband_fabric.port_id }}"
             error_count: "{{ event.infiniband_fabric.error_count }}"
@@ -36,7 +36,7 @@
         event.infiniband_fabric.event_type == "congestion"
       action:
         run_playbook:
-          name: stevefulme1.nvidia_ai_factory.ib_congestion_response
+          name: stevefulme1.gpu_ai_factory.ib_congestion_response
           extra_vars:
             port_id: "{{ event.infiniband_fabric.port_id }}"
             utilization: "{{ event.infiniband_fabric.utilization_percent }}"
