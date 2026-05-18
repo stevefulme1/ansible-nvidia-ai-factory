@@ -30,28 +30,15 @@ options:
         type: str
     cluster_type:
         description:
-            - Type of cluster (e.g., slurm, kubernetes).
+            - Type of cluster.
         type: str
         choices:
             - slurm
             - kubernetes
     max_nodes:
         description:
-            - Maximum number of nodes in the cluster.
+            - Maximum number of nodes.
         type: int
-    cluster_id:
-        description:
-            - The ID of an existing resource.
-            - Required for update and delete operations.
-        type: str
-    state:
-        description:
-            - The desired state of the resource.
-        type: str
-        choices:
-            - present
-            - absent
-        default: present
     cluster_id:
         description:
             - The ID of an existing resource.
@@ -89,7 +76,7 @@ EXAMPLES = r"""
 
 RETURN = r"""
 cluster:
-    description: Details of the bcm cluster resource.
+    description: Details of the resource.
     returned: on success when state is present
     type: dict
 """
@@ -143,8 +130,8 @@ def get_resource(client, base_url, resource_id):
 
 def find_resource(client, base_url, params):
     """Find a resource by name."""
-    name = params.get("name")
-    if not name:
+    name_val = params.get("name")
+    if not name_val:
         return None
     url = f"{base_url}/api/v1/clusters"
     try:
@@ -155,7 +142,7 @@ def find_resource(client, base_url, params):
         for item in items:
             if item.get("state", "").upper() in DEAD_STATES:
                 continue
-            if item.get("name") == name:
+            if item.get("name") == name_val:
                 return item
     except requests_lib.exceptions.HTTPError:
         pass
@@ -165,14 +152,14 @@ def create_resource(module, client, base_url):
     """Create a new resource."""
     params = module.params
     payload = {}
-        if params.get("name") is not None:
-            payload["name"] = params["name"]
-        if params.get("description") is not None:
-            payload["description"] = params["description"]
-        if params.get("cluster_type") is not None:
-            payload["cluster_type"] = params["cluster_type"]
-        if params.get("max_nodes") is not None:
-            payload["max_nodes"] = params["max_nodes"]
+    if params.get("name") is not None:
+        payload["name"] = params["name"]
+    if params.get("description") is not None:
+        payload["description"] = params["description"]
+    if params.get("cluster_type") is not None:
+        payload["cluster_type"] = params["cluster_type"]
+    if params.get("max_nodes") is not None:
+        payload["max_nodes"] = params["max_nodes"]
 
     url = f"{base_url}/api/v1/clusters"
     resp = call_with_retry(client.post, url, json=payload, timeout=60)
@@ -183,9 +170,7 @@ def create_resource(module, client, base_url):
     if resource_id and module.params.get("wait", True):
         def _get(rid):
             return get_resource(client, base_url, rid)
-        resource = wait_for_resource(
-            module, _get, resource_id, target_states=READY_STATES,
-        )
+        resource = wait_for_resource(module, _get, resource_id, target_states=READY_STATES)
     return resource
 
 
@@ -194,14 +179,14 @@ def update_resource(module, client, base_url, existing):
     params = module.params
     resource_id = existing.get("id") or existing.get("cluster_id")
     payload = {}
-        if params.get("name") is not None:
-            payload["name"] = params["name"]
-        if params.get("description") is not None:
-            payload["description"] = params["description"]
-        if params.get("cluster_type") is not None:
-            payload["cluster_type"] = params["cluster_type"]
-        if params.get("max_nodes") is not None:
-            payload["max_nodes"] = params["max_nodes"]
+    if params.get("name") is not None:
+        payload["name"] = params["name"]
+    if params.get("description") is not None:
+        payload["description"] = params["description"]
+    if params.get("cluster_type") is not None:
+        payload["cluster_type"] = params["cluster_type"]
+    if params.get("max_nodes") is not None:
+        payload["max_nodes"] = params["max_nodes"]
 
     url = f"{base_url}/api/v1/clusters/{resource_id}"
     resp = call_with_retry(client.put, url, json=payload, timeout=60)
@@ -211,9 +196,7 @@ def update_resource(module, client, base_url, existing):
     if module.params.get("wait", True):
         def _get(rid):
             return get_resource(client, base_url, rid)
-        resource = wait_for_resource(
-            module, _get, resource_id, target_states=READY_STATES,
-        )
+        resource = wait_for_resource(module, _get, resource_id, target_states=READY_STATES)
     return resource
 
 
@@ -226,9 +209,7 @@ def delete_resource(module, client, base_url, existing):
     if module.params.get("wait", True):
         def _get(rid):
             return get_resource(client, base_url, rid)
-        wait_for_resource(
-            module, _get, resource_id, target_states=DEAD_STATES,
-        )
+        wait_for_resource(module, _get, resource_id, target_states=DEAD_STATES)
 
 
 def needs_update(params, existing):
@@ -255,9 +236,7 @@ def main():
     module = AnsibleModule(
         argument_spec=get_module_args(),
         supports_check_mode=True,
-        required_if=[
-            ("state", "present", ("name",), True),
-        ],
+        required_if=[("state", "present", ("name",), True)],
     )
 
     if not HAS_REQUESTS:

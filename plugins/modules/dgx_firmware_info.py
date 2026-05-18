@@ -13,7 +13,7 @@ DOCUMENTATION = r"""
 module: dgx_firmware_info
 short_description: Get DGX firmware versions
 description:
-    - Retrieve firmware version information from DGX systems via Redfish API.
+    - Retrieve firmware version information from DGX systems.
     - This module is read-only and does not modify any resources.
 version_added: "1.0.0"
 author:
@@ -102,12 +102,15 @@ def main():
     else:
         url = f"{base_url}/redfish/v1/UpdateService/FirmwareInventory"
         query = {}
-
+        pass  # no additional filters
         try:
             resp = call_with_retry(client.get, url, params=query, timeout=30)
             resp.raise_for_status()
             data = resp.json()
-            items = data if isinstance(data, list) else data.get("items", data.get("results", [data]))
+            if isinstance(data, list):
+                items = data
+            else:
+                items = data.get("items", data.get("results", [data]))
             module.exit_json(changed=False, firmware_inventory=[to_dict(i) for i in items])
         except requests_lib.exceptions.HTTPError as exc:
             module.fail_json(msg=f"API error: {exc}")

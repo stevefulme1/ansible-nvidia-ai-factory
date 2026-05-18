@@ -2,7 +2,7 @@
 # Copyright (c) 2026, Steve Fulmer
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-"""Ansible module for read and configure bios settings on dgx systems via redfish api. supports sr-iov, iommu, and boot order configuration."""
+"""Ansible module for read and configure bios settings on dgx systems via redfish api."""
 
 from __future__ import absolute_import, division, print_function
 
@@ -13,24 +13,24 @@ DOCUMENTATION = r"""
 module: dgx_bios
 short_description: Configure DGX BIOS settings
 description:
-    - Read and configure BIOS settings on DGX systems via Redfish API. Supports SR-IOV, IOMMU, and boot order configuration.
+    - Read and configure BIOS settings on DGX systems via Redfish API.
 version_added: "1.0.0"
 author:
     - Steve Fulmer (@stevefulme1)
 options:
     node_id:
         description:
-            - The node ID or BMC address of the DGX system.
+            - Node ID or BMC address.
         type: str
         required: true
     settings:
         description:
-            - BIOS settings to configure as key-value pairs.
+            - BIOS settings as key-value pairs.
         type: dict
         required: true
     reset_after:
         description:
-            - Whether to reset the system after BIOS update.
+            - Reset system after BIOS update.
         type: bool
 extends_documentation_fragment:
     - stevefulme1.nvidia_ai_factory.nvidia
@@ -49,7 +49,7 @@ EXAMPLES = r"""
 
 RETURN = r"""
 bios:
-    description: Result of the dgx bios operation.
+    description: Result of the operation.
     returned: on success
     type: dict
 """
@@ -97,12 +97,12 @@ def main():
     base_url = client.base_url
 
     payload = {}
-        if params.get("node_id") is not None:
-            payload["node_id"] = params["node_id"]
-        if params.get("settings") is not None:
-            payload["settings"] = params["settings"]
-        if params.get("reset_after") is not None:
-            payload["reset_after"] = params["reset_after"]
+    if params.get("node_id") is not None:
+        payload["node_id"] = params["node_id"]
+    if params.get("settings") is not None:
+        payload["settings"] = params["settings"]
+    if params.get("reset_after") is not None:
+        payload["reset_after"] = params["reset_after"]
 
     url = f"{base_url}/redfish/v1/Systems/1/Bios"
     try:

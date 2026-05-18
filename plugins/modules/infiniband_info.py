@@ -13,7 +13,7 @@ DOCUMENTATION = r"""
 module: infiniband_info
 short_description: Query InfiniBand fabric status
 description:
-    - Retrieve InfiniBand fabric health including link status, error counters, and congestion metrics.
+    - Retrieve InfiniBand fabric health including link status and error counters.
     - This module is read-only and does not modify any resources.
 version_added: "1.0.0"
 author:
@@ -25,7 +25,7 @@ options:
         type: str
     cluster_id:
         description:
-            - Filter by cluster ID.
+            - Filter by cluster.
         type: str
 extends_documentation_fragment:
     - stevefulme1.nvidia_ai_factory.nvidia
@@ -113,7 +113,10 @@ def main():
             resp = call_with_retry(client.get, url, params=query, timeout=30)
             resp.raise_for_status()
             data = resp.json()
-            items = data if isinstance(data, list) else data.get("items", data.get("results", [data]))
+            if isinstance(data, list):
+                items = data
+            else:
+                items = data.get("items", data.get("results", [data]))
             module.exit_json(changed=False, ib_fabric=[to_dict(i) for i in items])
         except requests_lib.exceptions.HTTPError as exc:
             module.fail_json(msg=f"API error: {exc}")

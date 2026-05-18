@@ -13,7 +13,7 @@ DOCUMENTATION = r"""
 module: bcm_cluster_info
 short_description: List or get BCM cluster details
 description:
-    - Retrieve information about NVIDIA Base Command Manager clusters.
+    - Retrieve information about BCM clusters.
     - This module is read-only and does not modify any resources.
 version_added: "1.0.0"
 author:
@@ -113,7 +113,10 @@ def main():
             resp = call_with_retry(client.get, url, params=query, timeout=30)
             resp.raise_for_status()
             data = resp.json()
-            items = data if isinstance(data, list) else data.get("items", data.get("results", [data]))
+            if isinstance(data, list):
+                items = data
+            else:
+                items = data.get("items", data.get("results", [data]))
             module.exit_json(changed=False, clusters=[to_dict(i) for i in items])
         except requests_lib.exceptions.HTTPError as exc:
             module.fail_json(msg=f"API error: {exc}")

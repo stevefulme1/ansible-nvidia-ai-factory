@@ -13,7 +13,7 @@ DOCUMENTATION = r"""
 module: bcm_tenant_info
 short_description: List or get BCM tenant details
 description:
-    - Retrieve information about tenants in NVIDIA Base Command Manager.
+    - Retrieve information about BCM tenants.
     - This module is read-only and does not modify any resources.
 version_added: "1.0.0"
 author:
@@ -29,7 +29,7 @@ options:
         type: str
     cluster_id:
         description:
-            - Filter tenants by cluster ID.
+            - Filter by cluster ID.
         type: str
 extends_documentation_fragment:
     - stevefulme1.nvidia_ai_factory.nvidia
@@ -120,7 +120,10 @@ def main():
             resp = call_with_retry(client.get, url, params=query, timeout=30)
             resp.raise_for_status()
             data = resp.json()
-            items = data if isinstance(data, list) else data.get("items", data.get("results", [data]))
+            if isinstance(data, list):
+                items = data
+            else:
+                items = data.get("items", data.get("results", [data]))
             module.exit_json(changed=False, tenants=[to_dict(i) for i in items])
         except requests_lib.exceptions.HTTPError as exc:
             module.fail_json(msg=f"API error: {exc}")

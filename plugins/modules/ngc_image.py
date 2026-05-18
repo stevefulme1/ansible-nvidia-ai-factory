@@ -13,7 +13,7 @@ DOCUMENTATION = r"""
 module: ngc_image
 short_description: Pull and manage NGC container images
 description:
-    - Pull, list, and manage NVIDIA NGC container images for AI workloads.
+    - Pull, list, and manage NVIDIA NGC container images.
     - This module is idempotent and supports check mode.
 version_added: "1.0.0"
 author:
@@ -21,7 +21,7 @@ author:
 options:
     image_name:
         description:
-            - NGC image name (e.g., nvcr.io/nvidia/nemo:24.05).
+            - NGC image name.
         type: str
         required: true
     registry:
@@ -40,19 +40,6 @@ options:
             - always
             - if_not_present
             - never
-    image_id:
-        description:
-            - The ID of an existing resource.
-            - Required for update and delete operations.
-        type: str
-    state:
-        description:
-            - The desired state of the resource.
-        type: str
-        choices:
-            - present
-            - absent
-        default: present
     image_id:
         description:
             - The ID of an existing resource.
@@ -90,7 +77,7 @@ EXAMPLES = r"""
 
 RETURN = r"""
 ngc_image:
-    description: Details of the ngc image resource.
+    description: Details of the resource.
     returned: on success when state is present
     type: dict
 """
@@ -144,8 +131,8 @@ def get_resource(client, base_url, resource_id):
 
 def find_resource(client, base_url, params):
     """Find a resource by name."""
-    name = params.get("image_name")
-    if not name:
+    name_val = params.get("image_name")
+    if not name_val:
         return None
     url = f"{base_url}/api/v1/ngc-images"
     try:
@@ -156,7 +143,7 @@ def find_resource(client, base_url, params):
         for item in items:
             if item.get("state", "").upper() in DEAD_STATES:
                 continue
-            if item.get("image_name") == name:
+            if item.get("image_name") == name_val:
                 return item
     except requests_lib.exceptions.HTTPError:
         pass
@@ -166,14 +153,14 @@ def create_resource(module, client, base_url):
     """Create a new resource."""
     params = module.params
     payload = {}
-        if params.get("image_name") is not None:
-            payload["image_name"] = params["image_name"]
-        if params.get("registry") is not None:
-            payload["registry"] = params["registry"]
-        if params.get("tag") is not None:
-            payload["tag"] = params["tag"]
-        if params.get("pull_policy") is not None:
-            payload["pull_policy"] = params["pull_policy"]
+    if params.get("image_name") is not None:
+        payload["image_name"] = params["image_name"]
+    if params.get("registry") is not None:
+        payload["registry"] = params["registry"]
+    if params.get("tag") is not None:
+        payload["tag"] = params["tag"]
+    if params.get("pull_policy") is not None:
+        payload["pull_policy"] = params["pull_policy"]
 
     url = f"{base_url}/api/v1/ngc-images"
     resp = call_with_retry(client.post, url, json=payload, timeout=60)
@@ -184,9 +171,7 @@ def create_resource(module, client, base_url):
     if resource_id and module.params.get("wait", True):
         def _get(rid):
             return get_resource(client, base_url, rid)
-        resource = wait_for_resource(
-            module, _get, resource_id, target_states=READY_STATES,
-        )
+        resource = wait_for_resource(module, _get, resource_id, target_states=READY_STATES)
     return resource
 
 
@@ -195,14 +180,14 @@ def update_resource(module, client, base_url, existing):
     params = module.params
     resource_id = existing.get("id") or existing.get("image_id")
     payload = {}
-        if params.get("image_name") is not None:
-            payload["image_name"] = params["image_name"]
-        if params.get("registry") is not None:
-            payload["registry"] = params["registry"]
-        if params.get("tag") is not None:
-            payload["tag"] = params["tag"]
-        if params.get("pull_policy") is not None:
-            payload["pull_policy"] = params["pull_policy"]
+    if params.get("image_name") is not None:
+        payload["image_name"] = params["image_name"]
+    if params.get("registry") is not None:
+        payload["registry"] = params["registry"]
+    if params.get("tag") is not None:
+        payload["tag"] = params["tag"]
+    if params.get("pull_policy") is not None:
+        payload["pull_policy"] = params["pull_policy"]
 
     url = f"{base_url}/api/v1/ngc-images/{resource_id}"
     resp = call_with_retry(client.put, url, json=payload, timeout=60)
@@ -212,9 +197,7 @@ def update_resource(module, client, base_url, existing):
     if module.params.get("wait", True):
         def _get(rid):
             return get_resource(client, base_url, rid)
-        resource = wait_for_resource(
-            module, _get, resource_id, target_states=READY_STATES,
-        )
+        resource = wait_for_resource(module, _get, resource_id, target_states=READY_STATES)
     return resource
 
 
@@ -227,9 +210,7 @@ def delete_resource(module, client, base_url, existing):
     if module.params.get("wait", True):
         def _get(rid):
             return get_resource(client, base_url, rid)
-        wait_for_resource(
-            module, _get, resource_id, target_states=DEAD_STATES,
-        )
+        wait_for_resource(module, _get, resource_id, target_states=DEAD_STATES)
 
 
 def needs_update(params, existing):
@@ -251,9 +232,7 @@ def main():
     module = AnsibleModule(
         argument_spec=get_module_args(),
         supports_check_mode=True,
-        required_if=[
-            ("state", "present", ("image_name",), True),
-        ],
+        required_if=[("state", "present", ("image_name",), True)],
     )
 
     if not HAS_REQUESTS:

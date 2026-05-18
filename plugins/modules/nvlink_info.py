@@ -13,7 +13,7 @@ DOCUMENTATION = r"""
 module: nvlink_info
 short_description: Query NVLink topology and health
 description:
-    - Retrieve NVLink interconnect topology, bandwidth utilization, and link health for multi-GPU systems.
+    - Retrieve NVLink interconnect topology, bandwidth, and link health.
     - This module is read-only and does not modify any resources.
 version_added: "1.0.0"
 author:
@@ -102,12 +102,15 @@ def main():
     else:
         url = f"{base_url}/api/v1/nvlink"
         query = {}
-
+        pass  # no additional filters
         try:
             resp = call_with_retry(client.get, url, params=query, timeout=30)
             resp.raise_for_status()
             data = resp.json()
-            items = data if isinstance(data, list) else data.get("items", data.get("results", [data]))
+            if isinstance(data, list):
+                items = data
+            else:
+                items = data.get("items", data.get("results", [data]))
             module.exit_json(changed=False, nvlink=[to_dict(i) for i in items])
         except requests_lib.exceptions.HTTPError as exc:
             module.fail_json(msg=f"API error: {exc}")

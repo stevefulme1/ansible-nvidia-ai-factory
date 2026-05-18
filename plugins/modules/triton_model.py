@@ -11,9 +11,9 @@ __metaclass__ = type
 DOCUMENTATION = r"""
 ---
 module: triton_model
-short_description: Load and unload models in Triton Inference Server
+short_description: Load and unload models in Triton
 description:
-    - Manage model lifecycle in Triton Inference Server instances. Load, unload, and configure models for inference.
+    - Manage model lifecycle in Triton Inference Server instances.
     - This module is idempotent and supports check mode.
 version_added: "1.0.0"
 author:
@@ -21,12 +21,12 @@ author:
 options:
     model_name:
         description:
-            - The name of the model in Triton.
+            - Name of the model in Triton.
         type: str
         required: true
     server_id:
         description:
-            - The Triton server instance ID.
+            - Triton server instance ID.
         type: str
         required: true
     model_path:
@@ -45,20 +45,7 @@ options:
         description:
             - Maximum batch size.
         type: int
-    model_name:
-        description:
-            - The ID of an existing resource.
-            - Required for update and delete operations.
-        type: str
-    state:
-        description:
-            - The desired state of the resource.
-        type: str
-        choices:
-            - present
-            - absent
-        default: present
-    model_name:
+    model_id:
         description:
             - The ID of an existing resource.
             - Required for update and delete operations.
@@ -89,13 +76,13 @@ EXAMPLES = r"""
   stevefulme1.nvidia_ai_factory.triton_model:
     bcm_url: "https://bcm.example.com"
     bcm_token: "{{ bcm_token }}"
-    model_name: "example-id"
+    model_id: "example-id"
     state: absent
 """
 
 RETURN = r"""
 triton_model:
-    description: Details of the triton model resource.
+    description: Details of the resource.
     returned: on success when state is present
     type: dict
 """
@@ -129,7 +116,7 @@ def get_module_args():
         model_version=dict(type="str"),
         instance_count=dict(type="int"),
         max_batch_size=dict(type="int"),
-        model_name=dict(type="str"),
+        model_id=dict(type="str"),
         state=dict(type="str", choices=["present", "absent"], default="present"),
     )
     module_args.update(NVIDIA_COMMON_ARGS)
@@ -151,8 +138,8 @@ def get_resource(client, base_url, resource_id):
 
 def find_resource(client, base_url, params):
     """Find a resource by name."""
-    name = params.get("model_name")
-    if not name:
+    name_val = params.get("model_name")
+    if not name_val:
         return None
     url = f"{base_url}/api/v1/triton-models"
     try:
@@ -163,7 +150,7 @@ def find_resource(client, base_url, params):
         for item in items:
             if item.get("state", "").upper() in DEAD_STATES:
                 continue
-            if item.get("model_name") == name:
+            if item.get("model_name") == name_val:
                 return item
     except requests_lib.exceptions.HTTPError:
         pass
@@ -173,51 +160,49 @@ def create_resource(module, client, base_url):
     """Create a new resource."""
     params = module.params
     payload = {}
-        if params.get("model_name") is not None:
-            payload["model_name"] = params["model_name"]
-        if params.get("server_id") is not None:
-            payload["server_id"] = params["server_id"]
-        if params.get("model_path") is not None:
-            payload["model_path"] = params["model_path"]
-        if params.get("model_version") is not None:
-            payload["model_version"] = params["model_version"]
-        if params.get("instance_count") is not None:
-            payload["instance_count"] = params["instance_count"]
-        if params.get("max_batch_size") is not None:
-            payload["max_batch_size"] = params["max_batch_size"]
+    if params.get("model_name") is not None:
+        payload["model_name"] = params["model_name"]
+    if params.get("server_id") is not None:
+        payload["server_id"] = params["server_id"]
+    if params.get("model_path") is not None:
+        payload["model_path"] = params["model_path"]
+    if params.get("model_version") is not None:
+        payload["model_version"] = params["model_version"]
+    if params.get("instance_count") is not None:
+        payload["instance_count"] = params["instance_count"]
+    if params.get("max_batch_size") is not None:
+        payload["max_batch_size"] = params["max_batch_size"]
 
     url = f"{base_url}/api/v1/triton-models"
     resp = call_with_retry(client.post, url, json=payload, timeout=60)
     resp.raise_for_status()
     resource = resp.json()
 
-    resource_id = resource.get("id") or resource.get("model_name")
+    resource_id = resource.get("id") or resource.get("model_id")
     if resource_id and module.params.get("wait", True):
         def _get(rid):
             return get_resource(client, base_url, rid)
-        resource = wait_for_resource(
-            module, _get, resource_id, target_states=READY_STATES,
-        )
+        resource = wait_for_resource(module, _get, resource_id, target_states=READY_STATES)
     return resource
 
 
 def update_resource(module, client, base_url, existing):
     """Update an existing resource."""
     params = module.params
-    resource_id = existing.get("id") or existing.get("model_name")
+    resource_id = existing.get("id") or existing.get("model_id")
     payload = {}
-        if params.get("model_name") is not None:
-            payload["model_name"] = params["model_name"]
-        if params.get("server_id") is not None:
-            payload["server_id"] = params["server_id"]
-        if params.get("model_path") is not None:
-            payload["model_path"] = params["model_path"]
-        if params.get("model_version") is not None:
-            payload["model_version"] = params["model_version"]
-        if params.get("instance_count") is not None:
-            payload["instance_count"] = params["instance_count"]
-        if params.get("max_batch_size") is not None:
-            payload["max_batch_size"] = params["max_batch_size"]
+    if params.get("model_name") is not None:
+        payload["model_name"] = params["model_name"]
+    if params.get("server_id") is not None:
+        payload["server_id"] = params["server_id"]
+    if params.get("model_path") is not None:
+        payload["model_path"] = params["model_path"]
+    if params.get("model_version") is not None:
+        payload["model_version"] = params["model_version"]
+    if params.get("instance_count") is not None:
+        payload["instance_count"] = params["instance_count"]
+    if params.get("max_batch_size") is not None:
+        payload["max_batch_size"] = params["max_batch_size"]
 
     url = f"{base_url}/api/v1/triton-models/{resource_id}"
     resp = call_with_retry(client.put, url, json=payload, timeout=60)
@@ -227,24 +212,20 @@ def update_resource(module, client, base_url, existing):
     if module.params.get("wait", True):
         def _get(rid):
             return get_resource(client, base_url, rid)
-        resource = wait_for_resource(
-            module, _get, resource_id, target_states=READY_STATES,
-        )
+        resource = wait_for_resource(module, _get, resource_id, target_states=READY_STATES)
     return resource
 
 
 def delete_resource(module, client, base_url, existing):
     """Delete a resource."""
-    resource_id = existing.get("id") or existing.get("model_name")
+    resource_id = existing.get("id") or existing.get("model_id")
     url = f"{base_url}/api/v1/triton-models/{resource_id}"
     call_with_retry(client.delete, url, timeout=60)
 
     if module.params.get("wait", True):
         def _get(rid):
             return get_resource(client, base_url, rid)
-        wait_for_resource(
-            module, _get, resource_id, target_states=DEAD_STATES,
-        )
+        wait_for_resource(module, _get, resource_id, target_states=DEAD_STATES)
 
 
 def needs_update(params, existing):
@@ -271,9 +252,7 @@ def main():
     module = AnsibleModule(
         argument_spec=get_module_args(),
         supports_check_mode=True,
-        required_if=[
-            ("state", "present", ("model_name", "server_id",), True),
-        ],
+        required_if=[("state", "present", ("model_name", "server_id",), True)],
     )
 
     if not HAS_REQUESTS:
@@ -285,8 +264,8 @@ def main():
     state = params["state"]
 
     existing = None
-    if params.get("model_name"):
-        existing = get_resource(client, base_url, params["model_name"])
+    if params.get("model_id"):
+        existing = get_resource(client, base_url, params["model_id"])
     else:
         existing = find_resource(client, base_url, params)
 

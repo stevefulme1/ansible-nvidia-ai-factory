@@ -11,9 +11,9 @@ __metaclass__ = type
 DOCUMENTATION = r"""
 ---
 module: bcm_gpu_allocation
-short_description: Allocate or deallocate GPU slices to tenants
+short_description: Allocate or deallocate GPU slices
 description:
-    - Manage GPU resource allocations for tenants in NVIDIA Base Command Manager. Supports MIG (Multi-Instance GPU) slicing.
+    - Manage GPU allocations for tenants in BCM.
     - This module is idempotent and supports check mode.
 version_added: "1.0.0"
 author:
@@ -21,30 +21,30 @@ author:
 options:
     tenant_id:
         description:
-            - The ID of the tenant to allocate GPUs to.
+            - Tenant ID to allocate GPUs to.
         type: str
         required: true
     cluster_id:
         description:
-            - The ID of the BCM cluster.
+            - BCM cluster ID.
         type: str
         required: true
     node_id:
         description:
-            - Specific node to allocate from (optional).
+            - Specific node to allocate from.
         type: str
     gpu_count:
         description:
-            - Number of GPU slices to allocate.
+            - Number of GPU slices.
         type: int
         required: true
     gpu_type:
         description:
-            - GPU model to allocate (a100, h100, b200).
+            - GPU model to allocate.
         type: str
     mig_profile:
         description:
-            - MIG profile for GPU partitioning (e.g., 1g.5gb, 2g.10gb, 3g.20gb, 7g.40gb).
+            - MIG profile for partitioning.
         type: str
     priority:
         description:
@@ -54,19 +54,6 @@ options:
             - low
             - normal
             - high
-    allocation_id:
-        description:
-            - The ID of an existing resource.
-            - Required for update and delete operations.
-        type: str
-    state:
-        description:
-            - The desired state of the resource.
-        type: str
-        choices:
-            - present
-            - absent
-        default: present
     allocation_id:
         description:
             - The ID of an existing resource.
@@ -104,7 +91,7 @@ EXAMPLES = r"""
 
 RETURN = r"""
 gpu_allocation:
-    description: Details of the bcm gpu allocation resource.
+    description: Details of the resource.
     returned: on success when state is present
     type: dict
 """
@@ -160,27 +147,27 @@ def get_resource(client, base_url, resource_id):
 
 
 def find_resource(client, base_url, params):
-    """Find resource is not supported without a name field."""
+    """No name-based lookup available."""
     return None
 
 def create_resource(module, client, base_url):
     """Create a new resource."""
     params = module.params
     payload = {}
-        if params.get("tenant_id") is not None:
-            payload["tenant_id"] = params["tenant_id"]
-        if params.get("cluster_id") is not None:
-            payload["cluster_id"] = params["cluster_id"]
-        if params.get("node_id") is not None:
-            payload["node_id"] = params["node_id"]
-        if params.get("gpu_count") is not None:
-            payload["gpu_count"] = params["gpu_count"]
-        if params.get("gpu_type") is not None:
-            payload["gpu_type"] = params["gpu_type"]
-        if params.get("mig_profile") is not None:
-            payload["mig_profile"] = params["mig_profile"]
-        if params.get("priority") is not None:
-            payload["priority"] = params["priority"]
+    if params.get("tenant_id") is not None:
+        payload["tenant_id"] = params["tenant_id"]
+    if params.get("cluster_id") is not None:
+        payload["cluster_id"] = params["cluster_id"]
+    if params.get("node_id") is not None:
+        payload["node_id"] = params["node_id"]
+    if params.get("gpu_count") is not None:
+        payload["gpu_count"] = params["gpu_count"]
+    if params.get("gpu_type") is not None:
+        payload["gpu_type"] = params["gpu_type"]
+    if params.get("mig_profile") is not None:
+        payload["mig_profile"] = params["mig_profile"]
+    if params.get("priority") is not None:
+        payload["priority"] = params["priority"]
 
     url = f"{base_url}/api/v1/gpu-allocations"
     resp = call_with_retry(client.post, url, json=payload, timeout=60)
@@ -191,9 +178,7 @@ def create_resource(module, client, base_url):
     if resource_id and module.params.get("wait", True):
         def _get(rid):
             return get_resource(client, base_url, rid)
-        resource = wait_for_resource(
-            module, _get, resource_id, target_states=READY_STATES,
-        )
+        resource = wait_for_resource(module, _get, resource_id, target_states=READY_STATES)
     return resource
 
 
@@ -202,20 +187,20 @@ def update_resource(module, client, base_url, existing):
     params = module.params
     resource_id = existing.get("id") or existing.get("allocation_id")
     payload = {}
-        if params.get("tenant_id") is not None:
-            payload["tenant_id"] = params["tenant_id"]
-        if params.get("cluster_id") is not None:
-            payload["cluster_id"] = params["cluster_id"]
-        if params.get("node_id") is not None:
-            payload["node_id"] = params["node_id"]
-        if params.get("gpu_count") is not None:
-            payload["gpu_count"] = params["gpu_count"]
-        if params.get("gpu_type") is not None:
-            payload["gpu_type"] = params["gpu_type"]
-        if params.get("mig_profile") is not None:
-            payload["mig_profile"] = params["mig_profile"]
-        if params.get("priority") is not None:
-            payload["priority"] = params["priority"]
+    if params.get("tenant_id") is not None:
+        payload["tenant_id"] = params["tenant_id"]
+    if params.get("cluster_id") is not None:
+        payload["cluster_id"] = params["cluster_id"]
+    if params.get("node_id") is not None:
+        payload["node_id"] = params["node_id"]
+    if params.get("gpu_count") is not None:
+        payload["gpu_count"] = params["gpu_count"]
+    if params.get("gpu_type") is not None:
+        payload["gpu_type"] = params["gpu_type"]
+    if params.get("mig_profile") is not None:
+        payload["mig_profile"] = params["mig_profile"]
+    if params.get("priority") is not None:
+        payload["priority"] = params["priority"]
 
     url = f"{base_url}/api/v1/gpu-allocations/{resource_id}"
     resp = call_with_retry(client.put, url, json=payload, timeout=60)
@@ -225,9 +210,7 @@ def update_resource(module, client, base_url, existing):
     if module.params.get("wait", True):
         def _get(rid):
             return get_resource(client, base_url, rid)
-        resource = wait_for_resource(
-            module, _get, resource_id, target_states=READY_STATES,
-        )
+        resource = wait_for_resource(module, _get, resource_id, target_states=READY_STATES)
     return resource
 
 
@@ -240,9 +223,7 @@ def delete_resource(module, client, base_url, existing):
     if module.params.get("wait", True):
         def _get(rid):
             return get_resource(client, base_url, rid)
-        wait_for_resource(
-            module, _get, resource_id, target_states=DEAD_STATES,
-        )
+        wait_for_resource(module, _get, resource_id, target_states=DEAD_STATES)
 
 
 def needs_update(params, existing):
@@ -264,9 +245,7 @@ def main():
     module = AnsibleModule(
         argument_spec=get_module_args(),
         supports_check_mode=True,
-        required_if=[
-            ("state", "present", ("tenant_id", "cluster_id", "gpu_count",), True),
-        ],
+        required_if=[("state", "present", ("tenant_id", "cluster_id", "gpu_count",), True)],
     )
 
     if not HAS_REQUESTS:

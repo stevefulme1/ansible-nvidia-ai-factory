@@ -20,17 +20,17 @@ author:
 options:
     node_id:
         description:
-            - The node ID or BMC address of the DGX system.
+            - Node ID or BMC address.
         type: str
         required: true
     firmware_url:
         description:
-            - URL to the firmware update package.
+            - URL to firmware update package.
         type: str
         required: true
     component:
         description:
-            - Firmware component to update (bios, bmc, gpu_driver).
+            - Firmware component to update.
         type: str
     force:
         description:
@@ -53,7 +53,7 @@ EXAMPLES = r"""
 
 RETURN = r"""
 firmware_update:
-    description: Result of the dgx firmware operation.
+    description: Result of the operation.
     returned: on success
     type: dict
 """
@@ -102,14 +102,14 @@ def main():
     base_url = client.base_url
 
     payload = {}
-        if params.get("node_id") is not None:
-            payload["node_id"] = params["node_id"]
-        if params.get("firmware_url") is not None:
-            payload["firmware_url"] = params["firmware_url"]
-        if params.get("component") is not None:
-            payload["component"] = params["component"]
-        if params.get("force") is not None:
-            payload["force"] = params["force"]
+    if params.get("node_id") is not None:
+        payload["node_id"] = params["node_id"]
+    if params.get("firmware_url") is not None:
+        payload["firmware_url"] = params["firmware_url"]
+    if params.get("component") is not None:
+        payload["component"] = params["component"]
+    if params.get("force") is not None:
+        payload["force"] = params["force"]
 
     url = f"{base_url}/redfish/v1/UpdateService"
     try:

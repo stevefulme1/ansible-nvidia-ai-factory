@@ -2,7 +2,7 @@
 # Copyright (c) 2026, Steve Fulmer
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-"""Ansible module for control dgx system power state (on, off, reset, cycle) via redfish api."""
+"""Ansible module for control dgx system power state via redfish api."""
 
 from __future__ import absolute_import, division, print_function
 
@@ -13,14 +13,14 @@ DOCUMENTATION = r"""
 module: dgx_power
 short_description: Manage DGX power state
 description:
-    - Control DGX system power state (on, off, reset, cycle) via Redfish API.
+    - Control DGX system power state via Redfish API.
 version_added: "1.0.0"
 author:
     - Steve Fulmer (@stevefulme1)
 options:
     node_id:
         description:
-            - The node ID or BMC address of the DGX system.
+            - Node ID or BMC address.
         type: str
         required: true
     power_action:
@@ -51,7 +51,7 @@ EXAMPLES = r"""
 
 RETURN = r"""
 power:
-    description: Result of the dgx power operation.
+    description: Result of the operation.
     returned: on success
     type: dict
 """
@@ -98,10 +98,10 @@ def main():
     base_url = client.base_url
 
     payload = {}
-        if params.get("node_id") is not None:
-            payload["node_id"] = params["node_id"]
-        if params.get("power_action") is not None:
-            payload["power_action"] = params["power_action"]
+    if params.get("node_id") is not None:
+        payload["node_id"] = params["node_id"]
+    if params.get("power_action") is not None:
+        payload["power_action"] = params["power_action"]
 
     url = f"{base_url}/redfish/v1/Systems/1/Actions/ComputerSystem.Reset"
     try:

@@ -13,7 +13,7 @@ DOCUMENTATION = r"""
 module: dgx_health
 short_description: Query DGX system health via Redfish
 description:
-    - Retrieve health status of DGX systems including GPU, CPU, memory, storage, fans, and power supply status via Redfish API.
+    - Retrieve health status of DGX systems including GPU, CPU, memory, and power.
     - This module is read-only and does not modify any resources.
 version_added: "1.0.0"
 author:
@@ -102,12 +102,15 @@ def main():
     else:
         url = f"{base_url}/redfish/v1/Systems/1"
         query = {}
-
+        pass  # no additional filters
         try:
             resp = call_with_retry(client.get, url, params=query, timeout=30)
             resp.raise_for_status()
             data = resp.json()
-            items = data if isinstance(data, list) else data.get("items", data.get("results", [data]))
+            if isinstance(data, list):
+                items = data
+            else:
+                items = data.get("items", data.get("results", [data]))
             module.exit_json(changed=False, health=[to_dict(i) for i in items])
         except requests_lib.exceptions.HTTPError as exc:
             module.fail_json(msg=f"API error: {exc}")

@@ -11,9 +11,9 @@ __metaclass__ = type
 DOCUMENTATION = r"""
 ---
 module: rdma_config
-short_description: Configure RDMA settings for multi-node training
+short_description: Configure RDMA settings
 description:
-    - Configure RDMA over Converged Ethernet (RoCE) or InfiniBand RDMA settings for distributed multi-node GPU training with NCCL.
+    - Configure RDMA settings for distributed multi-node GPU training with NCCL.
     - This module is idempotent and supports check mode.
 version_added: "1.0.0"
 author:
@@ -47,25 +47,12 @@ options:
         type: int
     nccl_socket_ifname:
         description:
-            - Network interface for NCCL socket communication.
+            - Network interface for NCCL socket.
         type: str
     nccl_ib_hca:
         description:
-            - InfiniBand HCA device for NCCL.
+            - IB HCA device for NCCL.
         type: str
-    config_id:
-        description:
-            - The ID of an existing resource.
-            - Required for update and delete operations.
-        type: str
-    state:
-        description:
-            - The desired state of the resource.
-        type: str
-        choices:
-            - present
-            - absent
-        default: present
     config_id:
         description:
             - The ID of an existing resource.
@@ -103,7 +90,7 @@ EXAMPLES = r"""
 
 RETURN = r"""
 rdma_config:
-    description: Details of the rdma config resource.
+    description: Details of the resource.
     returned: on success when state is present
     type: dict
 """
@@ -160,8 +147,8 @@ def get_resource(client, base_url, resource_id):
 
 def find_resource(client, base_url, params):
     """Find a resource by name."""
-    name = params.get("name")
-    if not name:
+    name_val = params.get("name")
+    if not name_val:
         return None
     url = f"{base_url}/api/v1/rdma"
     try:
@@ -172,7 +159,7 @@ def find_resource(client, base_url, params):
         for item in items:
             if item.get("state", "").upper() in DEAD_STATES:
                 continue
-            if item.get("name") == name:
+            if item.get("name") == name_val:
                 return item
     except requests_lib.exceptions.HTTPError:
         pass
@@ -182,20 +169,20 @@ def create_resource(module, client, base_url):
     """Create a new resource."""
     params = module.params
     payload = {}
-        if params.get("name") is not None:
-            payload["name"] = params["name"]
-        if params.get("node_id") is not None:
-            payload["node_id"] = params["node_id"]
-        if params.get("rdma_type") is not None:
-            payload["rdma_type"] = params["rdma_type"]
-        if params.get("gid_index") is not None:
-            payload["gid_index"] = params["gid_index"]
-        if params.get("traffic_class") is not None:
-            payload["traffic_class"] = params["traffic_class"]
-        if params.get("nccl_socket_ifname") is not None:
-            payload["nccl_socket_ifname"] = params["nccl_socket_ifname"]
-        if params.get("nccl_ib_hca") is not None:
-            payload["nccl_ib_hca"] = params["nccl_ib_hca"]
+    if params.get("name") is not None:
+        payload["name"] = params["name"]
+    if params.get("node_id") is not None:
+        payload["node_id"] = params["node_id"]
+    if params.get("rdma_type") is not None:
+        payload["rdma_type"] = params["rdma_type"]
+    if params.get("gid_index") is not None:
+        payload["gid_index"] = params["gid_index"]
+    if params.get("traffic_class") is not None:
+        payload["traffic_class"] = params["traffic_class"]
+    if params.get("nccl_socket_ifname") is not None:
+        payload["nccl_socket_ifname"] = params["nccl_socket_ifname"]
+    if params.get("nccl_ib_hca") is not None:
+        payload["nccl_ib_hca"] = params["nccl_ib_hca"]
 
     url = f"{base_url}/api/v1/rdma"
     resp = call_with_retry(client.post, url, json=payload, timeout=60)
@@ -206,9 +193,7 @@ def create_resource(module, client, base_url):
     if resource_id and module.params.get("wait", True):
         def _get(rid):
             return get_resource(client, base_url, rid)
-        resource = wait_for_resource(
-            module, _get, resource_id, target_states=READY_STATES,
-        )
+        resource = wait_for_resource(module, _get, resource_id, target_states=READY_STATES)
     return resource
 
 
@@ -217,20 +202,20 @@ def update_resource(module, client, base_url, existing):
     params = module.params
     resource_id = existing.get("id") or existing.get("config_id")
     payload = {}
-        if params.get("name") is not None:
-            payload["name"] = params["name"]
-        if params.get("node_id") is not None:
-            payload["node_id"] = params["node_id"]
-        if params.get("rdma_type") is not None:
-            payload["rdma_type"] = params["rdma_type"]
-        if params.get("gid_index") is not None:
-            payload["gid_index"] = params["gid_index"]
-        if params.get("traffic_class") is not None:
-            payload["traffic_class"] = params["traffic_class"]
-        if params.get("nccl_socket_ifname") is not None:
-            payload["nccl_socket_ifname"] = params["nccl_socket_ifname"]
-        if params.get("nccl_ib_hca") is not None:
-            payload["nccl_ib_hca"] = params["nccl_ib_hca"]
+    if params.get("name") is not None:
+        payload["name"] = params["name"]
+    if params.get("node_id") is not None:
+        payload["node_id"] = params["node_id"]
+    if params.get("rdma_type") is not None:
+        payload["rdma_type"] = params["rdma_type"]
+    if params.get("gid_index") is not None:
+        payload["gid_index"] = params["gid_index"]
+    if params.get("traffic_class") is not None:
+        payload["traffic_class"] = params["traffic_class"]
+    if params.get("nccl_socket_ifname") is not None:
+        payload["nccl_socket_ifname"] = params["nccl_socket_ifname"]
+    if params.get("nccl_ib_hca") is not None:
+        payload["nccl_ib_hca"] = params["nccl_ib_hca"]
 
     url = f"{base_url}/api/v1/rdma/{resource_id}"
     resp = call_with_retry(client.put, url, json=payload, timeout=60)
@@ -240,9 +225,7 @@ def update_resource(module, client, base_url, existing):
     if module.params.get("wait", True):
         def _get(rid):
             return get_resource(client, base_url, rid)
-        resource = wait_for_resource(
-            module, _get, resource_id, target_states=READY_STATES,
-        )
+        resource = wait_for_resource(module, _get, resource_id, target_states=READY_STATES)
     return resource
 
 
@@ -255,9 +238,7 @@ def delete_resource(module, client, base_url, existing):
     if module.params.get("wait", True):
         def _get(rid):
             return get_resource(client, base_url, rid)
-        wait_for_resource(
-            module, _get, resource_id, target_states=DEAD_STATES,
-        )
+        wait_for_resource(module, _get, resource_id, target_states=DEAD_STATES)
 
 
 def needs_update(params, existing):
@@ -294,9 +275,7 @@ def main():
     module = AnsibleModule(
         argument_spec=get_module_args(),
         supports_check_mode=True,
-        required_if=[
-            ("state", "present", ("name", "node_id",), True),
-        ],
+        required_if=[("state", "present", ("name", "node_id",), True)],
     )
 
     if not HAS_REQUESTS:

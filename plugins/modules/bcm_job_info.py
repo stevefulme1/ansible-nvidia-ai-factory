@@ -13,7 +13,7 @@ DOCUMENTATION = r"""
 module: bcm_job_info
 short_description: List or get BCM job details
 description:
-    - Retrieve job status and details from NVIDIA Base Command Manager.
+    - Retrieve job status and details from BCM.
     - This module is read-only and does not modify any resources.
 version_added: "1.0.0"
 author:
@@ -29,11 +29,11 @@ options:
         type: str
     cluster_id:
         description:
-            - Filter by cluster ID.
+            - Filter by cluster.
         type: str
     tenant_id:
         description:
-            - Filter by tenant ID.
+            - Filter by tenant.
         type: str
     status:
         description:
@@ -134,7 +134,10 @@ def main():
             resp = call_with_retry(client.get, url, params=query, timeout=30)
             resp.raise_for_status()
             data = resp.json()
-            items = data if isinstance(data, list) else data.get("items", data.get("results", [data]))
+            if isinstance(data, list):
+                items = data
+            else:
+                items = data.get("items", data.get("results", [data]))
             module.exit_json(changed=False, jobs=[to_dict(i) for i in items])
         except requests_lib.exceptions.HTTPError as exc:
             module.fail_json(msg=f"API error: {exc}")
