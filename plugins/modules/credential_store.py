@@ -31,7 +31,6 @@ options:
             - Vault authentication token.
         type: str
         required: true
-        no_log: true
     credential_name:
         description:
             - Name identifier for the credential.
@@ -53,7 +52,6 @@ options:
         description:
             - The secret value to store. Required when state is present.
         type: str
-        no_log: true
     vault_path:
         description:
             - Path in Vault where the credential is stored.

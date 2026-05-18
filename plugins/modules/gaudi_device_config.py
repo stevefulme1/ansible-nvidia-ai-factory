@@ -30,7 +30,6 @@ options:
             - API authentication key.
         type: str
         required: true
-        no_log: true
     device_id:
         description:
             - Gaudi device ID to configure.

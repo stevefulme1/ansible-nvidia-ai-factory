@@ -29,7 +29,6 @@ options:
             - API authentication key.
         type: str
         required: true
-        no_log: true
     state:
         description:
             - Desired state of the ROCm driver.

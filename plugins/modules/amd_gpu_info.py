@@ -30,7 +30,6 @@ options:
             - API authentication key.
         type: str
         required: true
-        no_log: true
     gpu_id:
         description:
             - Specific GPU ID to query. If omitted, all GPUs are returned.

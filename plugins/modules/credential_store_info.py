@@ -30,7 +30,6 @@ options:
             - Vault authentication token.
         type: str
         required: true
-        no_log: true
     vault_path:
         description:
             - Path in Vault to list credentials from.

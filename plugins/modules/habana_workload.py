@@ -30,7 +30,6 @@ options:
             - API authentication key.
         type: str
         required: true
-        no_log: true
     name:
         description:
             - Workload name.

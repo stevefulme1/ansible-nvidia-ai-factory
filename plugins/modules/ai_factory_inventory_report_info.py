@@ -29,7 +29,6 @@ options:
             - API authentication key.
         type: str
         required: true
-        no_log: true
     report_id:
         description:
             - Specific report ID to query.

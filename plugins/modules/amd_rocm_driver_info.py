@@ -29,7 +29,6 @@ options:
             - API authentication key.
         type: str
         required: true
-        no_log: true
 requirements:
     - "python >= 3.12"
     - "requests"
