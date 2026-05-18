@@ -1,10 +1,14 @@
-# stevefulme1.nvidia_ai_factory
+# stevefulme1.gpu_ai_factory
 
-Ansible Collection for NVIDIA AI Factory / Sovereign AI Factory automation.
+Ansible Collection for multi-vendor GPU AI Factory automation.
 
 Provides comprehensive automation for NVIDIA Base Command Manager (BCM),
 DGX/HGX systems, GPU allocation, tenant isolation, InfiniBand/RDMA networking,
-NeMo model deployment, Triton Inference Server, and NGC catalog management.
+NeMo model deployment, Triton Inference Server, NGC catalog management,
+AMD MI300X GPU management via ROCm SMI, Intel Gaudi accelerator management
+via Habana Labs API, DISA STIG and CIS benchmark security compliance,
+HashiCorp Vault credential integration, AAP subscription sizing,
+and Professional Services deployment bundles.
 
 ## Requirements
 
@@ -15,7 +19,7 @@ NeMo model deployment, Triton Inference Server, and NGC catalog management.
 ## Installation
 
 ```bash
-ansible-galaxy collection install stevefulme1.nvidia_ai_factory
+ansible-galaxy collection install stevefulme1.gpu_ai_factory
 ```
 
 ## Modules
@@ -61,9 +65,39 @@ ansible-galaxy collection install stevefulme1.nvidia_ai_factory
 | `nvlink_info` | Query NVLink topology |
 | `rdma_config` | Configure RDMA settings |
 
+### AMD MI300X (new in 1.1.0)
+| Module | Description |
+|--------|-------------|
+| `amd_gpu_info` | Query AMD GPU status via ROCm SMI |
+| `amd_gpu_config` | Configure AMD MI300X GPU settings |
+| `amd_rocm_driver` | Manage ROCm driver installation/updates |
+| `amd_rocm_driver_info` | Query ROCm driver and version info |
+
+### Intel Gaudi (new in 1.1.0)
+| Module | Description |
+|--------|-------------|
+| `gaudi_device_info` | Query Intel Gaudi accelerator status |
+| `gaudi_device_config` | Configure Intel Gaudi device settings |
+| `gaudi_firmware` | Manage Intel Gaudi firmware updates |
+| `gaudi_firmware_info` | Query Gaudi firmware versions |
+| `habana_workload` | Manage Habana workload submissions |
+| `habana_workload_info` | Query workload status |
+
+### Credential Management (new in 1.1.0)
+| Module | Description |
+|--------|-------------|
+| `credential_store` | Manage AI platform credentials in HashiCorp Vault |
+| `credential_store_info` | List/query stored credential metadata |
+
+### Subscription Calculator (new in 1.1.0)
+| Module | Description |
+|--------|-------------|
+| `ai_factory_inventory_report` | Generate AAP subscription sizing report |
+| `ai_factory_inventory_report_info` | Query existing inventory reports |
+
 ## Inventory Plugin
 
-`nvidia_bcm_inventory` — Dynamic inventory from BCM API with automatic
+`nvidia_bcm_inventory` -- Dynamic inventory from BCM API with automatic
 grouping by node type and GPU model.
 
 ## Roles
@@ -76,6 +110,11 @@ grouping by node type and GPU model.
 | `infiniband_rdma` | Configure IB RDMA for multi-node training |
 | `virtual_media_boot` | DGX provisioning via virtual media |
 | `nemo_deploy` | Deploy NeMo models with Triton |
+| `stig_dgx` | DISA STIG hardening for DGX nodes (new in 1.1.0) |
+| `cis_ai_cluster` | CIS benchmark hardening for AI clusters (new in 1.1.0) |
+| `vault_integration` | Configure HashiCorp Vault for AI Factory (new in 1.1.0) |
+| `ps_lab_setup` | Stand up a PS demo environment (new in 1.1.0) |
+| `reference_deployment` | Deploy AI Factory reference architecture (new in 1.1.0) |
 
 ## EDA Event Sources
 

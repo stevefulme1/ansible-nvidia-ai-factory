@@ -1,5 +1,35 @@
 # Changelog
 
+## 1.1.0 (2026-05-18)
+
+### New Features
+
+- **AMD MI300X modules**: `amd_gpu_info`, `amd_gpu_config`, `amd_rocm_driver`,
+  `amd_rocm_driver_info` for AMD GPU management via ROCm SMI
+- **Intel Gaudi modules**: `gaudi_device_info`, `gaudi_device_config`,
+  `gaudi_firmware`, `gaudi_firmware_info`, `habana_workload`,
+  `habana_workload_info` for Intel Gaudi accelerator management
+- **Credential management modules**: `credential_store`,
+  `credential_store_info` for HashiCorp Vault integration
+- **Subscription calculator modules**: `ai_factory_inventory_report`,
+  `ai_factory_inventory_report_info` for AAP subscription sizing
+- **Security compliance roles**: `stig_dgx` (DISA STIG hardening),
+  `cis_ai_cluster` (CIS benchmark hardening)
+- **Vault integration role**: `vault_integration` for HashiCorp Vault
+  configuration with KV engine, policies, AppRole auth, and audit logging
+- **PS bundle roles**: `ps_lab_setup` (demo environment),
+  `reference_deployment` (reference architecture deployment)
+- **Multi-vendor GPU support**: Collection renamed from `nvidia_ai_factory`
+  to `gpu_ai_factory` to reflect AMD and Intel Gaudi support
+- **Unit tests**: Added tests for all new modules
+
+### Changes
+
+- Renamed collection from `nvidia_ai_factory` to `gpu_ai_factory`
+- Updated repository URLs from `ansible-nvidia-ai-factory` to
+  `ansible-gpu-ai-factory`
+- Added tags: `amd`, `intel`, `gaudi`, `rocm`, `compliance`, `stig`, `vault`
+
 ## 1.0.0 (2026-05-18)
 
 ### New Features
