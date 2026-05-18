@@ -29,8 +29,8 @@ options:
         type: str
         required: true
         choices:
-            - on
-            - off
+            - 'on'
+            - 'off'
             - reset
             - cycle
             - nmi

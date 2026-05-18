@@ -7,7 +7,6 @@
 from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
-import pytest
 from ansible_collections.stevefulme1.nvidia_ai_factory.plugins.module_utils.nvidia_common import (
     NVIDIA_COMMON_ARGS,
     LIFECYCLE_ACTIVE,
@@ -23,8 +22,10 @@ class TestNvidiaCommonArgs:
     """Tests for NVIDIA_COMMON_ARGS."""
 
     def test_common_args_has_required_keys(self):
-        required = ["bcm_url", "bcm_username", "bcm_password",
-                     "validate_certs", "wait", "wait_timeout"]
+        required = [
+            "bcm_url", "bcm_username", "bcm_password",
+            "validate_certs", "wait", "wait_timeout",
+        ]
         for key in required:
             assert key in NVIDIA_COMMON_ARGS, f"Missing key: {key}"
 

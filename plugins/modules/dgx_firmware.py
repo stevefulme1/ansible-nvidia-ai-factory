@@ -36,6 +36,7 @@ options:
         description:
             - Force update even if version matches.
         type: bool
+        default: false
 extends_documentation_fragment:
     - stevefulme1.nvidia_ai_factory.nvidia
 requirements:

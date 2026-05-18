@@ -134,7 +134,7 @@ def get_module_args():
         gpu_count=dict(type="int"),
         bmc_address=dict(type="str"),
         bmc_username=dict(type="str"),
-        bmc_password=dict(type="str"),
+        bmc_password=dict(type="str", no_log=True),
         node_id=dict(type="str"),
         state=dict(type="str", choices=["present", "absent"], default="present"),
     )

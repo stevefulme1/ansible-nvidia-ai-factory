@@ -116,7 +116,7 @@ def get_module_args():
         cluster_id=dict(type="str", required=True),
         max_gpus=dict(type="int"),
         max_jobs=dict(type="int"),
-        users=dict(type="list"),
+        users=dict(type="list", elements="str"),
         tenant_id=dict(type="str"),
         state=dict(type="str", choices=["present", "absent"], default="present"),
     )

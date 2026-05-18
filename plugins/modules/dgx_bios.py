@@ -32,6 +32,7 @@ options:
         description:
             - Reset system after BIOS update.
         type: bool
+        default: false
 extends_documentation_fragment:
     - stevefulme1.nvidia_ai_factory.nvidia
 requirements:

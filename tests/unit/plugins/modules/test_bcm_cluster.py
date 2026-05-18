@@ -9,7 +9,7 @@ __metaclass__ = type
 
 import json
 import pytest
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 from ansible.module_utils import basic
 from ansible.module_utils.common.text.converters import to_bytes
@@ -46,11 +46,11 @@ def mock_module(monkeypatch):
     """Patch AnsibleModule exit/fail for testing."""
     monkeypatch.setattr(
         basic.AnsibleModule, "exit_json",
-        lambda self, **kwargs: (_ for _ in ()).throw(AnsibleExitJson(kwargs)),
+        lambda self, **kwargs: (__x for __x in ()).throw(AnsibleExitJson(kwargs)),
     )
     monkeypatch.setattr(
         basic.AnsibleModule, "fail_json",
-        lambda self, **kwargs: (_ for _ in ()).throw(AnsibleFailJson(kwargs)),
+        lambda self, **kwargs: (__x for __x in ()).throw(AnsibleFailJson(kwargs)),
     )
 
 

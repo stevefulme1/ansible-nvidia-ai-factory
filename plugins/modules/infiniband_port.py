@@ -51,6 +51,7 @@ options:
         description:
             - Whether the port is enabled.
         type: bool
+        default: false
     port_id:
         description:
             - The ID of an existing resource.
@@ -120,7 +121,7 @@ def get_module_args():
         node_id=dict(type="str", required=True),
         speed=dict(type="str", choices=['hdr', 'hdr100', 'ndr', 'ndr200', 'xdr']),
         mtu=dict(type="int"),
-        partition_key=dict(type="str"),
+        partition_key=dict(type="str", no_log=True),
         enabled=dict(type="bool", default=False),
         port_id=dict(type="str"),
         state=dict(type="str", choices=["present", "absent"], default="present"),

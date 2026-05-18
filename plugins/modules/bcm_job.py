@@ -132,7 +132,7 @@ def get_module_args():
         gpu_count=dict(type="int"),
         node_count=dict(type="int"),
         environment=dict(type="dict"),
-        volumes=dict(type="list"),
+        volumes=dict(type="list", elements="str"),
         job_id=dict(type="str"),
         state=dict(type="str", choices=["present", "absent"], default="present"),
     )

@@ -37,6 +37,7 @@ options:
         description:
             - List of port GUIDs.
         type: list
+        elements: str
     qos_level:
         description:
             - Quality of service level.
@@ -111,9 +112,9 @@ from ansible_collections.stevefulme1.nvidia_ai_factory.plugins.module_utils.nvid
 def get_module_args():
     module_args = dict(
         name=dict(type="str", required=True),
-        pkey=dict(type="str", required=True),
+        pkey=dict(type="str", required=True, no_log=True),
         tenant_id=dict(type="str"),
-        members=dict(type="list"),
+        members=dict(type="list", elements="str"),
         qos_level=dict(type="str", choices=['best_effort', 'high', 'critical']),
         partition_id=dict(type="str"),
         state=dict(type="str", choices=["present", "absent"], default="present"),
