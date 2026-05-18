@@ -105,7 +105,7 @@ from ansible_collections.stevefulme1.nvidia_ai_factory.plugins.module_utils.nvid
 
 def get_module_args():
     module_args = dict(
-        image_name=dict(type="str"),
+        image_name=dict(type="str", required=True),
         registry=dict(type="str"),
         tag=dict(type="str"),
         pull_policy=dict(type="str", choices=['always', 'if_not_present', 'never']),

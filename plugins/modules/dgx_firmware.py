@@ -76,8 +76,8 @@ from ansible_collections.stevefulme1.nvidia_ai_factory.plugins.module_utils.nvid
 
 def get_module_args():
     module_args = dict(
-        node_id=dict(type="str"),
-        firmware_url=dict(type="str"),
+        node_id=dict(type="str", required=True),
+        firmware_url=dict(type="str", required=True),
         component=dict(type="str"),
         force=dict(type="bool", default=False),
     )

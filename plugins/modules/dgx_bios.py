@@ -72,8 +72,8 @@ from ansible_collections.stevefulme1.nvidia_ai_factory.plugins.module_utils.nvid
 
 def get_module_args():
     module_args = dict(
-        node_id=dict(type="str"),
-        settings=dict(type="dict"),
+        node_id=dict(type="str", required=True),
+        settings=dict(type="dict", required=True),
         reset_after=dict(type="bool", default=False),
     )
     module_args.update(NVIDIA_COMMON_ARGS)

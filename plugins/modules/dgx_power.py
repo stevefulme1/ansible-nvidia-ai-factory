@@ -74,8 +74,8 @@ from ansible_collections.stevefulme1.nvidia_ai_factory.plugins.module_utils.nvid
 
 def get_module_args():
     module_args = dict(
-        node_id=dict(type="str"),
-        power_action=dict(type="str", choices=['on', 'off', 'reset', 'cycle', 'nmi']),
+        node_id=dict(type="str", required=True),
+        power_action=dict(type="str", required=True, choices=['on', 'off', 'reset', 'cycle', 'nmi']),
     )
     module_args.update(NVIDIA_COMMON_ARGS)
     return module_args

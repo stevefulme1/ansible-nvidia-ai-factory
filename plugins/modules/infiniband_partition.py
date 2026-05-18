@@ -110,8 +110,8 @@ from ansible_collections.stevefulme1.nvidia_ai_factory.plugins.module_utils.nvid
 
 def get_module_args():
     module_args = dict(
-        name=dict(type="str"),
-        pkey=dict(type="str"),
+        name=dict(type="str", required=True),
+        pkey=dict(type="str", required=True),
         tenant_id=dict(type="str"),
         members=dict(type="list"),
         qos_level=dict(type="str", choices=['best_effort', 'high', 'critical']),

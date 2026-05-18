@@ -27,13 +27,11 @@ options:
       - The password for BCM API authentication.
       - Can also be set via the C(NVIDIA_BCM_PASSWORD) environment variable.
     type: str
-    no_log: true
   bcm_token:
     description:
       - An API token for BCM authentication (alternative to username/password).
       - Can also be set via the C(NVIDIA_BCM_TOKEN) environment variable.
     type: str
-    no_log: true
   validate_certs:
     description:
       - Whether to validate SSL certificates when connecting to the BCM API.

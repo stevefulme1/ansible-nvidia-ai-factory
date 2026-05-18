@@ -127,8 +127,8 @@ from ansible_collections.stevefulme1.nvidia_ai_factory.plugins.module_utils.nvid
 
 def get_module_args():
     module_args = dict(
-        hostname=dict(type="str"),
-        cluster_id=dict(type="str"),
+        hostname=dict(type="str", required=True),
+        cluster_id=dict(type="str", required=True),
         node_type=dict(type="str", choices=['dgx', 'hgx']),
         gpu_type=dict(type="str", choices=['a100', 'h100', 'h200', 'b200', 'gb200']),
         gpu_count=dict(type="int"),

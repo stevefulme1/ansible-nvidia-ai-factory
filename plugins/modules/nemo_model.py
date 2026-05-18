@@ -119,9 +119,9 @@ from ansible_collections.stevefulme1.nvidia_ai_factory.plugins.module_utils.nvid
 
 def get_module_args():
     module_args = dict(
-        name=dict(type="str"),
-        model_path=dict(type="str"),
-        cluster_id=dict(type="str"),
+        name=dict(type="str", required=True),
+        model_path=dict(type="str", required=True),
+        cluster_id=dict(type="str", required=True),
         gpu_count=dict(type="int"),
         replica_count=dict(type="int"),
         max_batch_size=dict(type="int"),

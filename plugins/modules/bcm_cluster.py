@@ -104,7 +104,7 @@ from ansible_collections.stevefulme1.nvidia_ai_factory.plugins.module_utils.nvid
 
 def get_module_args():
     module_args = dict(
-        name=dict(type="str"),
+        name=dict(type="str", required=True),
         description=dict(type="str"),
         cluster_type=dict(type="str", choices=['slurm', 'kubernetes']),
         max_nodes=dict(type="int"),

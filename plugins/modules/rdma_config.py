@@ -118,8 +118,8 @@ from ansible_collections.stevefulme1.nvidia_ai_factory.plugins.module_utils.nvid
 
 def get_module_args():
     module_args = dict(
-        name=dict(type="str"),
-        node_id=dict(type="str"),
+        name=dict(type="str", required=True),
+        node_id=dict(type="str", required=True),
         rdma_type=dict(type="str", choices=['infiniband', 'roce_v1', 'roce_v2']),
         gid_index=dict(type="int"),
         traffic_class=dict(type="int"),

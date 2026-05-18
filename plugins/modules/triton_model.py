@@ -110,8 +110,8 @@ from ansible_collections.stevefulme1.nvidia_ai_factory.plugins.module_utils.nvid
 
 def get_module_args():
     module_args = dict(
-        model_name=dict(type="str"),
-        server_id=dict(type="str"),
+        model_name=dict(type="str", required=True),
+        server_id=dict(type="str", required=True),
         model_path=dict(type="str"),
         model_version=dict(type="str"),
         instance_count=dict(type="int"),

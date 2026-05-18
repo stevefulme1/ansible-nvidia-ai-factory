@@ -116,8 +116,8 @@ from ansible_collections.stevefulme1.nvidia_ai_factory.plugins.module_utils.nvid
 
 def get_module_args():
     module_args = dict(
-        port_name=dict(type="str"),
-        node_id=dict(type="str"),
+        port_name=dict(type="str", required=True),
+        node_id=dict(type="str", required=True),
         speed=dict(type="str", choices=['hdr', 'hdr100', 'ndr', 'ndr200', 'xdr']),
         mtu=dict(type="int"),
         partition_key=dict(type="str"),

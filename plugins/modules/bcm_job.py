@@ -123,10 +123,10 @@ from ansible_collections.stevefulme1.nvidia_ai_factory.plugins.module_utils.nvid
 
 def get_module_args():
     module_args = dict(
-        name=dict(type="str"),
-        cluster_id=dict(type="str"),
+        name=dict(type="str", required=True),
+        cluster_id=dict(type="str", required=True),
         tenant_id=dict(type="str"),
-        image=dict(type="str"),
+        image=dict(type="str", required=True),
         command=dict(type="str"),
         gpu_count=dict(type="int"),
         node_count=dict(type="int"),

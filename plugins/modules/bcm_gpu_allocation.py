@@ -119,10 +119,10 @@ from ansible_collections.stevefulme1.nvidia_ai_factory.plugins.module_utils.nvid
 
 def get_module_args():
     module_args = dict(
-        tenant_id=dict(type="str"),
-        cluster_id=dict(type="str"),
+        tenant_id=dict(type="str", required=True),
+        cluster_id=dict(type="str", required=True),
         node_id=dict(type="str"),
-        gpu_count=dict(type="int"),
+        gpu_count=dict(type="int", required=True),
         gpu_type=dict(type="str"),
         mig_profile=dict(type="str"),
         priority=dict(type="str", choices=['low', 'normal', 'high']),
