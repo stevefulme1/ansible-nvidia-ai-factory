@@ -63,6 +63,11 @@ options:
         type: str
         default: kv
         choices: [kv, kv-v2]
+    validate_certs:
+        description:
+            - Whether to validate SSL certificates for Vault API requests.
+        type: bool
+        default: true
 requirements:
     - "python >= 3.12"
     - "requests"
