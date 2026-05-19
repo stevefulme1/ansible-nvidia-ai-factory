@@ -35,10 +35,12 @@ options:
             - name: NVIDIA_BCM_USERNAME
     bcm_password:
         description: Password for BCM API authentication.
+        secret: true
         env:
             - name: NVIDIA_BCM_PASSWORD
     bcm_token:
         description: API token for BCM authentication.
+        secret: true
         env:
             - name: NVIDIA_BCM_TOKEN
     validate_certs:

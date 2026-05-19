@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.1.1 (2026-05-18)
+
+### Security
+
+- Added `secret: true` to `bcm_token` and `bcm_password` options in lookup
+  plugins (`dgx_images`, `dgx_categories`, `bcm_nodes`) and the
+  `nvidia_bcm_inventory` inventory plugin.
+
 ## 1.1.0 (2026-05-18)
 
 ### New Features
