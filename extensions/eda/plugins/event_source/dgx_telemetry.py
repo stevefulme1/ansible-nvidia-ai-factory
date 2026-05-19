@@ -136,14 +136,16 @@ async def main(queue: asyncio.Queue, args: dict):
 
 
 if __name__ == "__main__":
+    import os
 
     class MockQueue:
         async def put(self, event):
-            print(json.dumps(event, indent=2))
+            sanitized = {k: v for k, v in event.items() if k != "raw"}
+            print(json.dumps(sanitized, indent=2))
 
     asyncio.run(main(MockQueue(), {
-        "hosts": ["192.168.1.100"],
-        "username": "admin",
-        "password": "admin",
+        "hosts": [os.environ.get("DGX_HOST", "localhost")],
+        "username": os.environ.get("DGX_USER", "admin"),
+        "password": os.environ.get("DGX_PASSWORD", "changeme"),
         "interval": 60,
     }))

@@ -129,13 +129,14 @@ async def main(queue: asyncio.Queue, args: dict):
 
 
 if __name__ == "__main__":
+    import os
 
     class MockQueue:
         async def put(self, event):
             print(json.dumps(event, indent=2))
 
     asyncio.run(main(MockQueue(), {
-        "bcm_url": "https://bcm.example.com",
-        "bcm_token": "test-token",
+        "bcm_url": os.environ.get("BCM_URL", "https://bcm.example.com"),
+        "bcm_token": os.environ.get("BCM_TOKEN", "changeme"),
         "interval": 60,
     }))

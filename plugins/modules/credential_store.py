@@ -126,6 +126,7 @@ def main():
         secret_value=dict(type='str', no_log=True),
         vault_path=dict(type='str', default='secret/data/ai-factory'),
         vault_engine=dict(type='str', default='kv', choices=['kv', 'kv-v2']),
+        validate_certs=dict(type='bool', default=True),
     )
 
     module = AnsibleModule(
@@ -146,6 +147,7 @@ def main():
     credential_type = module.params['credential_type']
     secret_value = module.params.get('secret_value')
     vault_path = module.params['vault_path']
+    validate_certs = module.params['validate_certs']
 
     headers = {
         'X-Vault-Token': api_key,
@@ -160,7 +162,7 @@ def main():
     try:
         response = requests.get(
             f"{host}/v1/{full_path}",
-            headers=headers, timeout=30,
+            headers=headers, timeout=30, verify=validate_certs,
         )
         if response.status_code == 200:
             existing = response.json().get('data', {})
@@ -175,7 +177,7 @@ def main():
         try:
             response = requests.delete(
                 f"{host}/v1/{full_path}",
-                headers=headers, timeout=30,
+                headers=headers, timeout=30, verify=validate_certs,
             )
             response.raise_for_status()
         except requests.exceptions.RequestException as e:
@@ -208,7 +210,7 @@ def main():
     try:
         response = requests.post(
             f"{host}/v1/{full_path}",
-            headers=headers, json=payload, timeout=30,
+            headers=headers, json=payload, timeout=30, verify=validate_certs,
         )
         response.raise_for_status()
     except requests.exceptions.RequestException as e:
