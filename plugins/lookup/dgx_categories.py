@@ -39,7 +39,6 @@ options:
       - An API token for BCM authentication.
       - Can also be set via the C(NVIDIA_BCM_TOKEN) environment variable.
     type: str
-    secret: true
     env:
       - name: NVIDIA_BCM_TOKEN
   bcm_username:
@@ -54,7 +53,6 @@ options:
       - The password for BCM API authentication.
       - Can also be set via the C(NVIDIA_BCM_PASSWORD) environment variable.
     type: str
-    secret: true
     env:
       - name: NVIDIA_BCM_PASSWORD
   validate_certs:
