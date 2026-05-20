@@ -16,8 +16,6 @@ description:
     by the NVIDIA AI Factory collection.
   - Includes filters for summing GPU memory, counting GPUs, filtering
     nodes by GPU type, and averaging GPU utilization from telemetry data.
-extends_documentation_fragment:
-  - stevefulme1.gpu_ai_factory.nvidia
 """
 
 EXAMPLES = r"""
