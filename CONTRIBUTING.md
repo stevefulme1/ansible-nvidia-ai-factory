@@ -1,42 +1,27 @@
-# Contributing to stevefulme1.nvidia_ai_factory
+# WELCOME TO ANSIBLE GITHUB
 
-## Development Setup
+Hi! Nice to see you here!
 
-```bash
-git clone https://github.com/stevefulme1/ansible-nvidia-ai-factory.git
-cd ansible-nvidia-ai-factory
-pip install ansible-core>=2.16 ansible-lint yamllint flake8 pytest requests
-```
+## QUESTIONS ?
 
-## Running Tests
+Please see the [Community Guide](https://docs.ansible.com/ansible/latest/community/index.html) for information on how to ask questions on the [mailing lists](https://docs.ansible.com/ansible/latest/community/communication.html#mailing-list-information) and IRC.
 
-```bash
-# Linting
-flake8 plugins/ --max-line-length=120 --ignore=E402,W503
-yamllint -c .yamllint .
-ansible-lint --strict
+The GitHub issue tracker is not the best place for questions for various reasons, but both IRC and the mailing list are very helpful places for those things, as the community page explains best.
 
-# Unit tests
-pytest tests/unit/ -v
+## CONTRIBUTING ?
 
-# Sanity tests
-ansible-test sanity --python 3.12 -v
-```
+By contributing to this project you agree to the Developer Certificate of Origin (DCO). This document was created by the Linux Kernel community and is a simple statement that you, as a contributor, have the legal right to make the contribution.
 
-## Module Pattern
+You can read more about the [DCO and Contributor License Agreements](https://docs.ansible.com/ansible/latest/community/collection_contributors/collection_requirements.html#contributor-license-agreements) on the Ansible docsite.
 
-All modules follow the pattern established in `plugins/modules/bcm_cluster.py`:
+Please review the [Community Guide](https://docs.ansible.com/ansible/latest/community/index.html) for more information on contributing to Ansible.
 
-1. Import `NVIDIA_COMMON_ARGS` from `nvidia_common`
-2. Define `get_module_args()` merging module-specific args with common args
-3. Implement `get_resource()`, `find_resource()`, `create_resource()`,
-   `update_resource()`, `delete_resource()`, `needs_update()`
-4. Support `check_mode` and idempotent operations
-5. Use `call_with_retry()` for all API calls
-6. Use `wait_for_resource()` for async operations
+## BUG TO REPORT ?
 
-## Pull Requests
+First and foremost, also check the [Community Guide](https://docs.ansible.com/ansible/latest/community/index.html).
 
-- Follow conventional commit format for PR titles
-- Ensure all linting passes
-- Add unit tests for new modules
+You can report bugs or make enhancement requests at the [Ansible GitHub issue page](http://github.com/ansible/ansible/issues/new/choose) by filling out the issue template that will be presented.
+
+Also please make sure you are testing on the latest released version of Ansible or the development branch; see the [Installation Guide](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html) for details.
+
+Thanks!
