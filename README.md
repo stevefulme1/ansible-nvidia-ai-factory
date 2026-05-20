@@ -60,3 +60,11 @@ ansible-galaxy collection install stevefulme1.gpu_ai_factory
 ## License
 
 GNU General Public License v3.0 or later.
+
+## Community
+
+- [Contributing](CONTRIBUTING.md) - How to contribute to this project
+- [Code of Conduct](CODE_OF_CONDUCT.md) - Ansible Community Code of Conduct
+- [Security Policy](SECURITY.md) - How to report security vulnerabilities
+- [License](COPYING) - GPL-3.0
+
