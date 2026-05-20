@@ -11,3 +11,5 @@ tests/output/
 *.retry
 .venv/
 venv/
+*.pyc
+.ansible/
