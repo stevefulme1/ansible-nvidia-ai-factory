@@ -1,11 +1,11 @@
 ---
 namespace: stevefulme1
 name: gpu_ai_factory
-version: 1.2.0
+version: 0.0.1
 readme: README.md
 authors:
   - Steve Fulmer <sfulmer@redhat.com>
-description: >-
+description: "EXPERIMENTAL - proof of concept, not production ready. >-"
   Ansible Collection for multi-vendor GPU AI Factory automation.
   Provides modules for NVIDIA Base Command Manager (BCM) cluster management,
   DGX/HGX node provisioning, GPU allocation, tenant isolation,
