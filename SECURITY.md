@@ -2,22 +2,14 @@
 
 ## Supported Versions
 
-| Version | Supported |
-| ------- | --------- |
-| 1.0.x   | Yes       |
+Ansible applies security fixes according to the 3-versions-back support
+policy. Please find more information in [our docs](
+https://docs.ansible.com/ansible/devel/reference_appendices/release_and_maintenance.html#release-status
+).
 
 ## Reporting a Vulnerability
 
-If you discover a security vulnerability, please report it responsibly:
-
-1. **Do not** open a public GitHub issue.
-2. Email the maintainer at sfulmer@redhat.com with details.
-3. Include steps to reproduce the issue.
-4. Allow reasonable time for a fix before public disclosure.
-
-## Security Considerations
-
-- BCM credentials are marked `no_log` in all modules.
-- Redfish/IPMI credentials should be stored in Ansible Vault.
-- `validate_certs` defaults to `true` for all HTTPS connections.
-- InfiniBand partition keys are treated as sensitive data.
+We encourage responsible disclosure practices for security
+vulnerabilities. Please read our [policies for reporting bugs](
+https://docs.ansible.com/ansible/devel/community/reporting_bugs_and_features.html#reporting-a-bug
+) if you want to report a security issue that might affect Ansible.
