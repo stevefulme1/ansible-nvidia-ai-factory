@@ -1,0 +1,83 @@
+---
+- name: Create ngc_model (check mode)
+  stevefulme1.gpu_ai_factory.ngc_model:
+    ngc_api_key: "{{ oci_nvidia_ngc_api_key }}"
+    org: "{{ oci_nvidia_ngc_org }}"
+    validate_certs: false
+    name: "{{ oci_nvidia_model_name }}"
+    display_name: "{{ oci_nvidia_model_display_name }}"
+    description: Integration test model
+    precision: fp16
+  check_mode: true
+  register: _check
+- name: Verify check mode reports changed
+  ansible.builtin.assert:
+    that:
+      - _check is changed
+- name: Create ngc_model
+  stevefulme1.gpu_ai_factory.ngc_model:
+    ngc_api_key: "{{ oci_nvidia_ngc_api_key }}"
+    org: "{{ oci_nvidia_ngc_org }}"
+    validate_certs: false
+    name: "{{ oci_nvidia_model_name }}"
+    display_name: "{{ oci_nvidia_model_display_name }}"
+    description: Integration test model
+    precision: fp16
+  register: _create
+- name: Verify ngc_model was created
+  ansible.builtin.assert:
+    that:
+      - _create is changed
+      - _create.model is defined
+- name: Create ngc_model again (idempotent)
+  stevefulme1.gpu_ai_factory.ngc_model:
+    ngc_api_key: "{{ oci_nvidia_ngc_api_key }}"
+    org: "{{ oci_nvidia_ngc_org }}"
+    validate_certs: false
+    name: "{{ oci_nvidia_model_name }}"
+    display_name: "{{ oci_nvidia_model_display_name }}"
+    description: Integration test model
+    precision: fp16
+  register: _idem
+- name: Verify create idempotency
+  ansible.builtin.assert:
+    that:
+      - _idem is not changed
+- name: Update ngc_model
+  stevefulme1.gpu_ai_factory.ngc_model:
+    ngc_api_key: "{{ oci_nvidia_ngc_api_key }}"
+    org: "{{ oci_nvidia_ngc_org }}"
+    validate_certs: false
+    name: "{{ oci_nvidia_model_name }}"
+    display_name: "{{ oci_nvidia_model_display_name }}"
+    description: Updated integration test model
+    precision: fp32
+  register: _update
+- name: Verify ngc_model was updated
+  ansible.builtin.assert:
+    that:
+      - _update is changed
+- name: Delete ngc_model
+  stevefulme1.gpu_ai_factory.ngc_model:
+    ngc_api_key: "{{ oci_nvidia_ngc_api_key }}"
+    org: "{{ oci_nvidia_ngc_org }}"
+    validate_certs: false
+    name: "{{ oci_nvidia_model_name }}"
+    state: absent
+  register: _delete
+- name: Verify ngc_model was deleted
+  ansible.builtin.assert:
+    that:
+      - _delete is changed
+- name: Delete ngc_model again (idempotent)
+  stevefulme1.gpu_ai_factory.ngc_model:
+    ngc_api_key: "{{ oci_nvidia_ngc_api_key }}"
+    org: "{{ oci_nvidia_ngc_org }}"
+    validate_certs: false
+    name: "{{ oci_nvidia_model_name }}"
+    state: absent
+  register: _delete_idem
+- name: Verify delete idempotency
+  ansible.builtin.assert:
+    that:
+      - _delete_idem is not changed

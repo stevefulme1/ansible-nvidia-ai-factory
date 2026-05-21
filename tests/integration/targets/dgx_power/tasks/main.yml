@@ -1,0 +1,14 @@
+---
+- name: Execute dgx_power
+  stevefulme1.gpu_ai_factory.dgx_power:
+    bmc_host: "{{ oci_nvidia_bmc_host }}"
+    bmc_username: "{{ oci_nvidia_bmc_username }}"
+    bmc_password: "{{ oci_nvidia_bmc_password }}"
+    validate_certs: false
+    state: on
+  register: _result
+- name: Verify dgx_power executed successfully
+  ansible.builtin.assert:
+    that:
+      - _result is not changed
+      - _result.power_state is defined

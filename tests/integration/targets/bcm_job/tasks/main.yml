@@ -1,0 +1,48 @@
+---
+- name: Submit bcm_job (check mode)
+  stevefulme1.gpu_ai_factory.bcm_job:
+    bcm_url: "{{ oci_nvidia_bcm_url }}"
+    bcm_token: "{{ oci_nvidia_bcm_token }}"
+    validate_certs: false
+    name: "{{ oci_nvidia_bcm_job_name }}"
+    command: "{{ oci_nvidia_bcm_job_command }}"
+    num_gpus: 1
+    num_nodes: 1
+    queue: "{{ oci_nvidia_bcm_queue }}"
+    state: submitted
+  check_mode: true
+  register: _check
+- name: Verify check mode reports changed
+  ansible.builtin.assert:
+    that:
+      - _check is changed
+- name: Submit bcm_job
+  stevefulme1.gpu_ai_factory.bcm_job:
+    bcm_url: "{{ oci_nvidia_bcm_url }}"
+    bcm_token: "{{ oci_nvidia_bcm_token }}"
+    validate_certs: false
+    name: "{{ oci_nvidia_bcm_job_name }}"
+    command: "{{ oci_nvidia_bcm_job_command }}"
+    num_gpus: 1
+    num_nodes: 1
+    queue: "{{ oci_nvidia_bcm_queue }}"
+    state: submitted
+  register: _create
+- name: Verify bcm_job was submitted
+  ansible.builtin.assert:
+    that:
+      - _create is changed
+      - _create.job is defined
+- name: Cancel bcm_job
+  stevefulme1.gpu_ai_factory.bcm_job:
+    bcm_url: "{{ oci_nvidia_bcm_url }}"
+    bcm_token: "{{ oci_nvidia_bcm_token }}"
+    validate_certs: false
+    name: "{{ oci_nvidia_bcm_job_name }}"
+    job_id: "{{ _create.job.id }}"
+    state: cancelled
+  register: _cancel
+- name: Verify bcm_job was cancelled
+  ansible.builtin.assert:
+    that:
+      - _cancel is changed

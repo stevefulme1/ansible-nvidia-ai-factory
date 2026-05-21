@@ -1,0 +1,79 @@
+---
+- name: Create ngc_container (check mode)
+  stevefulme1.gpu_ai_factory.ngc_container:
+    ngc_api_key: "{{ oci_nvidia_ngc_api_key }}"
+    org: "{{ oci_nvidia_ngc_org }}"
+    validate_certs: false
+    name: "{{ oci_nvidia_container_name }}"
+    display_name: "{{ oci_nvidia_container_display_name }}"
+    description: Integration test container
+  check_mode: true
+  register: _check
+- name: Verify check mode reports changed
+  ansible.builtin.assert:
+    that:
+      - _check is changed
+- name: Create ngc_container
+  stevefulme1.gpu_ai_factory.ngc_container:
+    ngc_api_key: "{{ oci_nvidia_ngc_api_key }}"
+    org: "{{ oci_nvidia_ngc_org }}"
+    validate_certs: false
+    name: "{{ oci_nvidia_container_name }}"
+    display_name: "{{ oci_nvidia_container_display_name }}"
+    description: Integration test container
+  register: _create
+- name: Verify ngc_container was created
+  ansible.builtin.assert:
+    that:
+      - _create is changed
+      - _create.container is defined
+- name: Create ngc_container again (idempotent)
+  stevefulme1.gpu_ai_factory.ngc_container:
+    ngc_api_key: "{{ oci_nvidia_ngc_api_key }}"
+    org: "{{ oci_nvidia_ngc_org }}"
+    validate_certs: false
+    name: "{{ oci_nvidia_container_name }}"
+    display_name: "{{ oci_nvidia_container_display_name }}"
+    description: Integration test container
+  register: _idem
+- name: Verify create idempotency
+  ansible.builtin.assert:
+    that:
+      - _idem is not changed
+- name: Update ngc_container
+  stevefulme1.gpu_ai_factory.ngc_container:
+    ngc_api_key: "{{ oci_nvidia_ngc_api_key }}"
+    org: "{{ oci_nvidia_ngc_org }}"
+    validate_certs: false
+    name: "{{ oci_nvidia_container_name }}"
+    display_name: "{{ oci_nvidia_container_display_name }}"
+    description: Updated integration test container
+  register: _update
+- name: Verify ngc_container was updated
+  ansible.builtin.assert:
+    that:
+      - _update is changed
+- name: Delete ngc_container
+  stevefulme1.gpu_ai_factory.ngc_container:
+    ngc_api_key: "{{ oci_nvidia_ngc_api_key }}"
+    org: "{{ oci_nvidia_ngc_org }}"
+    validate_certs: false
+    name: "{{ oci_nvidia_container_name }}"
+    state: absent
+  register: _delete
+- name: Verify ngc_container was deleted
+  ansible.builtin.assert:
+    that:
+      - _delete is changed
+- name: Delete ngc_container again (idempotent)
+  stevefulme1.gpu_ai_factory.ngc_container:
+    ngc_api_key: "{{ oci_nvidia_ngc_api_key }}"
+    org: "{{ oci_nvidia_ngc_org }}"
+    validate_certs: false
+    name: "{{ oci_nvidia_container_name }}"
+    state: absent
+  register: _delete_idem
+- name: Verify delete idempotency
+  ansible.builtin.assert:
+    that:
+      - _delete_idem is not changed
